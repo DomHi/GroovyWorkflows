@@ -1,5 +1,5 @@
 
-package wf
+package workflows
 
 import gwf.wfm.task.DummyTaskImpl
 
