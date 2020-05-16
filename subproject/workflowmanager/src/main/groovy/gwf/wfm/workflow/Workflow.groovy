@@ -1,5 +1,6 @@
 package gwf.wfm.workflow
 
+import gwf.api.delegate.WorkflowDelegateBase
 import org.codehaus.groovy.control.CompilerConfiguration
 
 class Workflow {
@@ -10,7 +11,7 @@ class Workflow {
         loadScript(source)
     }
 
-    void run(delegate) {
+    void run(WorkflowDelegateBase delegate) {
         script.setDelegate(delegate)
         script.run()
     }

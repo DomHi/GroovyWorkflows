@@ -18,4 +18,5 @@ dependencies {
     providedCompile 'org.slf4j:slf4j-api'
 
     implementation project(':subproject:workflowmanager')
+    implementation project(':subproject:workflows')
 }

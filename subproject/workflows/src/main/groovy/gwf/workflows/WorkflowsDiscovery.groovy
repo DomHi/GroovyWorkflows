@@ -11,6 +11,6 @@ class WorkflowsDiscovery implements WorkflowDiscovery {
     }
 
     private static String resourceName(WorkflowDiscoveryContext ctx) {
-        return "${ctx.name}.wfl"
+        return "workflows/${ctx.name}.wfl"
     }
 }

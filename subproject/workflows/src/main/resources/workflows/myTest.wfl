@@ -1,7 +1,9 @@
 
+package wf
+
 import gwf.wfm.task.DummyTaskImpl
 
-log.info 'myTest says blubb!'
+log.info 'Workflow found in workflows'
 
 tasks {
 
