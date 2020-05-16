@@ -1,0 +1,21 @@
+
+plugins {
+    id 'java'
+    id 'war'
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+dependencies {
+
+    providedCompile platform(project(':platform:base'))
+
+    providedCompile 'javax:javaee-api'
+    providedCompile 'org.slf4j:slf4j-api'
+
+    implementation project(':subproject:workflowmanager')
+}

@@ -1,0 +1,35 @@
+
+plugins {
+    id 'java-library'
+    id 'groovy'
+}
+
+dependencies {
+
+    implementation platform(project(':platform:base'))
+
+    implementation 'javax:javaee-api'
+    implementation 'org.slf4j:slf4j-api'
+
+    api 'org.codehaus.groovy:groovy'
+
+    implementation project(':subproject:workflowmanager-api')
+
+    // Testing dependencies
+    testImplementation platform(project(':platform:test'))
+
+    testImplementation 'org.spockframework:spock-core'
+    testImplementation 'org.codehaus.groovy:groovy-all'
+
+    testRuntimeOnly 'org.slf4j:slf4j-simple'
+
+    // optional dependencies for using Spock
+    testRuntimeOnly 'net.bytebuddy:byte-buddy'
+    testRuntimeOnly 'org.objenesis:objenesis'
+
+    testRuntimeOnly 'com.h2database:h2'
+}
+
+test {
+    useJUnitPlatform()
+}

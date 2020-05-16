@@ -1,0 +1,4 @@
+
+contribute(fileExtension('wfl')) {
+	delegatesTo gwf.api.delegate.WorkflowDelegateBase
+}

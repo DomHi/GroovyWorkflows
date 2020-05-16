@@ -1,0 +1,16 @@
+
+import gwf.wfm.task.DummyTaskImpl
+
+log.info 'myTest says blubb!'
+
+tasks {
+
+    task(DummyTaskImpl) {
+        name = "test1"
+    }
+
+    task(DummyTaskImpl) {
+        name = "test2"
+        dummyProperty = 'blubber'
+    }
+}

@@ -1,0 +1,9 @@
+
+plugins {
+    id 'groovy'
+}
+
+dependencies {
+    compileOnly project(':subproject:workflowmanager-api')
+    compileOnly project(':subproject:workflowmanager')
+}

@@ -1,0 +1,38 @@
+
+rootProject.name = 'GroovyWorkflows'
+
+// include platforms
+includeSubDir file('platform')
+
+// include subprojects
+includeSubDir file('subproject')
+
+def includeSubDir(File dir) {
+    fileTree(dir) {
+        include '**/*.gradle'
+    }.each {
+        addProject(dir, it)
+    }
+}
+
+def addProject(File root, File gradleFile) {
+    def parent = gradleFile.parentFile
+    if(gradleFile.name == "${parent.name}.gradle") {
+        def projectId = projectId(root, parent)
+        include projectId
+        def descriptor = project(projectId)
+        descriptor.projectDir = parent
+        descriptor.buildFileName = gradleFile.name
+    }
+}
+
+static def projectId(File root, File leaf) {
+    def current = leaf
+    def elements = []
+    while(root != current) {
+        elements.push(current.name)
+        current = current.parentFile
+    }
+    elements.push(current.name)
+    return ':' + elements.join(':')
+}

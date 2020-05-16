@@ -1,0 +1,6 @@
+
+def wflContext = context(filetypes: ["wfl"])
+
+contributor(wflContext) {
+    delegatesTo(findClass('gwf.api.delegate.WorkflowDelegateBase'))
+}

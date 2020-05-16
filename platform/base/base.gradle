@@ -1,0 +1,15 @@
+
+plugins {
+    id 'java-platform'
+}
+
+dependencies {
+    constraints {
+        api 'javax:javaee-api:8.0'
+        api 'org.slf4j:slf4j-api:1.7.30'
+
+        api 'org.codehaus.groovy:groovy:3.0.3'
+
+        api 'org.immutables:value:2.8.8'
+    }
+}
