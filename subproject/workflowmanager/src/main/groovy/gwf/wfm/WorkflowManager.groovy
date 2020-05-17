@@ -1,11 +1,12 @@
 package gwf.wfm
 
+import gwf.api.workflow.WorkflowConfiguration
 import gwf.api.workflow.WorkflowExecutionContext
 import gwf.api.discovery.ImmutableWorkflowDiscoveryContext
 import gwf.api.discovery.WorkflowDiscovery
 import gwf.api.discovery.WorkflowDiscoveryContext
 import gwf.wfm.delegate.WorkflowDelegateImpl
-import gwf.wfm.workflow.Workflow
+import gwf.wfm.workflow.WorkflowConfigurationImpl
 import gwf.wfm.workflow.WorkflowExecutionContextImpl
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -29,13 +30,13 @@ class WorkflowManager {
     void doSomething() {
         String wfName = "myTest"
 
-        Workflow wf = getWorkflow(wfName)
+        WorkflowConfiguration wf = getWorkflow(wfName)
         WorkflowExecutionContext ctx = getCtx(wfName)
 
         WorkflowDelegateImpl delegate = new WorkflowDelegateImpl(ctx)
 
         if(wf != null) {
-            wf.run(delegate)
+            wf.configure(delegate)
         } else {
             log.info("workflow was null.")
             return
@@ -48,7 +49,7 @@ class WorkflowManager {
         new WorkflowExecutionContextImpl(wfName)
     }
 
-    private Workflow getWorkflow(String name) {
+    private WorkflowConfiguration getWorkflow(String name) {
         WorkflowDiscoveryContext ctx = ImmutableWorkflowDiscoveryContext.builder()
             .name(name)
             .build()
@@ -59,6 +60,6 @@ class WorkflowManager {
             source = d.find ctx
         }
 
-        return source != null ? new Workflow(source) : null
+        return source != null ? new WorkflowConfigurationImpl(source) : null
     }
 }

@@ -11,7 +11,7 @@ public interface TaskConfig {
 	 * Add a {@code WorkflowTask} of given type and configure it using the given {@code Closure}.
 	 *
 	 * @param clazz type of task
-	 * @param cl to configure the task
+	 * @param cl {@code Closure} used to configure the task
 	 */
 	<T extends WorkflowTask> void task(
 			@DelegatesTo.Target Class<T> clazz,

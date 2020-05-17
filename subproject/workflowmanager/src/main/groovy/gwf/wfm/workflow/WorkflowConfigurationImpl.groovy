@@ -1,17 +1,19 @@
 package gwf.wfm.workflow
 
 import gwf.api.delegate.WorkflowDelegateBase
+import gwf.api.workflow.WorkflowConfiguration
 import org.codehaus.groovy.control.CompilerConfiguration
 
-class Workflow {
+class WorkflowConfigurationImpl implements WorkflowConfiguration {
 
     private WorkflowScript script
 
-    Workflow(URI source) {
+    WorkflowConfigurationImpl(URI source) {
         loadScript(source)
     }
 
-    void run(WorkflowDelegateBase delegate) {
+    @Override
+    void configure(WorkflowDelegateBase delegate) {
         script.setDelegate(delegate)
         script.run()
     }

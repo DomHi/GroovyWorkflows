@@ -1,18 +1,33 @@
 
 package workflows
 
+import gwf.api.task.GenericTask
 import gwf.wfm.task.DummyTaskImpl
 
 log.info 'Workflow found in workflows'
 
+executor {
+    properties.TEST = 'Blubb'
+}
+
 tasks {
 
     task(DummyTaskImpl) {
-        name = "test1"
+        name = "task 1"
+        log.info "task 1 configured"
     }
 
-    task(DummyTaskImpl) {
-        name = "test2"
-        dummyProperty = 'blubber'
+    task(GenericTask) {
+        name = "task 2"
+
+        action {
+            log.info "$name first action"
+        }
+
+        action {
+            log.info "$name second action"
+        }
+
+        log.info "task 2 configured"
     }
 }

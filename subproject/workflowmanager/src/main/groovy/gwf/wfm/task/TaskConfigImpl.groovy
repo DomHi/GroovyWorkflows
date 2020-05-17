@@ -17,14 +17,15 @@ class TaskConfigImpl implements TaskConfig {
         }
         def impl = instance.get()
 
-        def hydrated = cl.rehydrate(impl, this, this)
-        hydrated.call()
+        def clone = (Closure) cl.clone()
+        clone.setDelegate(impl)
+        clone.call()
 
         tasks.add(impl)
     }
 
     @Override
-    <T extends WorkflowTask> Collection<T> getTasks() {
-        tasks as Collection<T>
+    Collection<WorkflowTask> getTasks() {
+        tasks
     }
 }
