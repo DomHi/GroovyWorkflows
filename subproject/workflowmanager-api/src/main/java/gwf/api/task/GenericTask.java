@@ -7,11 +7,13 @@ import java.util.List;
 
 public class GenericTask extends WorkflowTask {
 
-	private List<Closure<?>> taskActions = new ArrayList<>();
+	private final List<Closure<?>> taskActions = new ArrayList<>();
 
 	public void action(Closure<?> cl) {
-		cl.setResolveStrategy(Closure.DELEGATE_FIRST);
-		taskActions.add(cl);
+		// TODO use utility class to wrap this functionality
+		Closure<?> clone = (Closure<?>) cl.clone();
+		clone.setResolveStrategy(Closure.DELEGATE_FIRST);
+		taskActions.add(clone);
 	}
 
 	@Override

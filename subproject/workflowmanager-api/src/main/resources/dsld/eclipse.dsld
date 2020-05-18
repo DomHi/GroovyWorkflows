@@ -1,4 +1,6 @@
 
-contribute(fileExtension('wfl')) {
+def ctx = fileExtension('wfl')
+
+contribute(ctx) {
 	delegatesTo gwf.api.delegate.WorkflowDelegateBase
 }

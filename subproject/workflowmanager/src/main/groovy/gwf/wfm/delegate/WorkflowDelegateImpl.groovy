@@ -11,13 +11,13 @@ import org.slf4j.LoggerFactory
 
 class WorkflowDelegateImpl implements WorkflowDelegateBase {
 
-    private Logger log;
+    private Logger log
 
-    private WorkflowExecutionContext ctx;
+    private WorkflowExecutionContext ctx
 
-    private ExecutorConfig executorConfig;
+    private ExecutorConfig executorConfig
 
-    private TaskConfig taskConfig;
+    private TaskConfig taskConfig
 
     WorkflowDelegateImpl(WorkflowExecutionContext ctx) {
         this.ctx = ctx

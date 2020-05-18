@@ -11,12 +11,15 @@ class TaskConfigImpl implements TaskConfig {
 
     @Override
     <T extends WorkflowTask> void task(Class<T> clazz, Closure<?> cl) {
+        // TODO implement class instantiator instead of hard-coding lookup here
         def instance = CDI.current().select(clazz)
+
         if(instance.unsatisfied) {
             throw new IllegalArgumentException("Invalid class $clazz")
         }
         def impl = instance.get()
 
+        // TODO implement utilty class to handle delegation
         def clone = (Closure) cl.clone()
         clone.setDelegate(impl)
         clone.call()
