@@ -7,14 +7,14 @@ public interface ExecutorConfig {
 	/**
 	 * @return currently configured executor class
 	 */
-	Class<? extends  ExecutorConfig> getExecutorClass();
+	Class<? extends  WorkflowExecutor> getExecutorClass();
 
 	/**
 	 * Provide executor class which should be used to execute tasks
 	 *
 	 * @param impl executor class
 	 */
-	<T extends  ExecutorConfig> void setExecutorClass(Class<T> impl);
+	<T extends  WorkflowExecutor> void setExecutorClass(Class<T> impl);
 
 	/**
 	 * @return properties configured for this configuration
