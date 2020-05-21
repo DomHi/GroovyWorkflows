@@ -1,15 +1,15 @@
-package gwf.api.task;
+package gwf.util.tasks;
 
-import groovy.lang.Closure;
+import gwf.api.task.TaskExecutionResult;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class GenericTask extends WorkflowTask {
+/**
+ * Task implementation which allows to run generic actions (in the form of Closures) during execution phase.
+ */
+class GenericActionTask extends AbstractWorkflowTask {
 
 	private final List<Closure<?>> taskActions = new ArrayList<>();
 
-	public void action(Closure<?> cl) {
+	void action(Closure<?> cl) {
 		// TODO use utility class to wrap this functionality
 		Closure<?> clone = (Closure<?>) cl.clone();
 		clone.setResolveStrategy(Closure.DELEGATE_FIRST);
@@ -17,7 +17,7 @@ public class GenericTask extends WorkflowTask {
 	}
 
 	@Override
-	public <T extends TaskExecutionResult> T execute() {
+	<T extends TaskExecutionResult> T execute() {
 
 		for(Closure<?> action : taskActions) {
 			try {
@@ -31,6 +31,7 @@ public class GenericTask extends WorkflowTask {
 		return null;
 	}
 
+	// TODO add configuration option to decide how to handle Exceptions
 	private void handle(RuntimeException e) {
 		throw e;
 	}

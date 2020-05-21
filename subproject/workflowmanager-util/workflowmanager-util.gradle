@@ -1,0 +1,10 @@
+
+plugins {
+    id 'groovy'
+}
+
+dependencies {
+
+    implementation platform(project(':platform:base'))
+    implementation project(':subproject:workflowmanager-api')
+}

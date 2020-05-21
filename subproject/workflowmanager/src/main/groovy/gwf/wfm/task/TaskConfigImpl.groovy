@@ -15,7 +15,7 @@ class TaskConfigImpl implements TaskConfig {
         def instance = CDI.current().select(clazz)
 
         if(instance.unsatisfied) {
-            throw new IllegalArgumentException("Invalid class $clazz")
+            throw new IllegalArgumentException("Invalid $clazz")
         }
         def impl = instance.get()
 

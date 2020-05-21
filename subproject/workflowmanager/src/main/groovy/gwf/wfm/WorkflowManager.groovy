@@ -59,12 +59,11 @@ class WorkflowManager {
             .technology(ctx.technology)
             .build()
 
-        URI source = null
-        for(WorkflowDiscovery d : discoveries) {
-            log.info "try discovery: $d.class.name"
-            source = d.find discoveryContext
-        }
-
-        return source != null ? new WorkflowConfigurationImpl(source) : null
+        discoveries.stream()
+            .map(d -> d.find discoveryContext)
+            .filter(Objects::nonNull)
+            .findFirst()
+            .map(uri -> new WorkflowConfigurationImpl(uri))
+            .orElse(null)
     }
 }

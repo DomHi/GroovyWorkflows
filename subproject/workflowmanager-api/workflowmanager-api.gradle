@@ -9,7 +9,7 @@ dependencies {
 
     api 'org.slf4j:slf4j-api'
 
-    implementation 'org.codehaus.groovy:groovy'
+    api 'org.codehaus.groovy:groovy'
 
     compileOnly 'org.immutables:value'
     annotationProcessor 'org.immutables:value'

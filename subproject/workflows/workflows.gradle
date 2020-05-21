@@ -6,4 +6,6 @@ plugins {
 dependencies {
     compileOnly project(':subproject:workflowmanager-api')
     compileOnly project(':subproject:workflowmanager')
+
+    implementation project(':subproject:workflowmanager-util')
 }

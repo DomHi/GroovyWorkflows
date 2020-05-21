@@ -1,8 +1,7 @@
 
 package workflows
 
-import gwf.api.task.GenericTask
-import gwf.wfm.task.DummyTaskImpl
+import gwf.util.tasks.GenericActionTask
 
 log.info 'Workflow found in workflows'
 
@@ -12,12 +11,12 @@ executor {
 
 tasks {
 
-    task(DummyTaskImpl) {
+    task(GenericActionTask) {
         name = "task 1"
         log.info "task 1 configured"
     }
 
-    task(GenericTask) {
+    task(GenericActionTask) {
         name = "task 2"
 
         action {

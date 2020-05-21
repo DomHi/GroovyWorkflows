@@ -1,16 +1,13 @@
 package gwf.api.task;
 
-public abstract class WorkflowTask {
+/**
+ * Base interface for all worklow tasks.
+ */
+public interface WorkflowTask {
 
-	private String name;
+	String getName();
 
-	public abstract <T extends TaskExecutionResult> T execute();
+	void setName(String name);
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
+	<T extends TaskExecutionResult> T execute();
 }
