@@ -1,12 +1,17 @@
 package gwf.api.workflow;
 
+import org.immutables.value.Value;
+
+import java.util.Optional;
+
+@Value.Immutable
 public interface WorkflowExecutionContext {
 
 	String getWorkflowName();
 
-	String getRelease();
+	Optional<String> getRelease();
 
-	String getSwVersion();
+	Optional<String> getSwVersion();
 
-	String getTechnology();
+	Optional<String> getTechnology();
 }

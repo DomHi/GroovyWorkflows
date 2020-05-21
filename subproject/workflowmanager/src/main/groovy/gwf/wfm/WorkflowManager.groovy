@@ -1,5 +1,6 @@
 package gwf.wfm
 
+import gwf.api.workflow.ImmutableWorkflowExecutionContext
 import gwf.api.workflow.WorkflowConfiguration
 import gwf.api.workflow.WorkflowExecutionContext
 import gwf.api.discovery.ImmutableWorkflowDiscoveryContext
@@ -7,7 +8,6 @@ import gwf.api.discovery.WorkflowDiscovery
 import gwf.api.discovery.WorkflowDiscoveryContext
 import gwf.wfm.delegate.WorkflowDelegateImpl
 import gwf.wfm.workflow.WorkflowConfigurationImpl
-import gwf.wfm.workflow.WorkflowExecutionContextImpl
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -30,8 +30,8 @@ class WorkflowManager {
     void doSomething() {
         String wfName = "myTest"
 
-        WorkflowConfiguration wf = getWorkflow(wfName)
         WorkflowExecutionContext ctx = getCtx(wfName)
+        WorkflowConfiguration wf = getWorkflow(ctx)
 
         WorkflowDelegateImpl delegate = new WorkflowDelegateImpl(ctx)
 
@@ -46,18 +46,23 @@ class WorkflowManager {
     }
 
     private WorkflowExecutionContext getCtx(String wfName) {
-        new WorkflowExecutionContextImpl(wfName)
+        ImmutableWorkflowExecutionContext.builder()
+            .workflowName(wfName)
+            .build()
     }
 
-    private WorkflowConfiguration getWorkflow(String name) {
-        WorkflowDiscoveryContext ctx = ImmutableWorkflowDiscoveryContext.builder()
-            .name(name)
+    private WorkflowConfiguration getWorkflow(WorkflowExecutionContext ctx) {
+        WorkflowDiscoveryContext discoveryContext = ImmutableWorkflowDiscoveryContext.builder()
+            .name(ctx.workflowName)
+            .release(ctx.release)
+            .swVersion(ctx.swVersion)
+            .technology(ctx.technology)
             .build()
 
         URI source = null
         for(WorkflowDiscovery d : discoveries) {
             log.info "try discovery: $d.class.name"
-            source = d.find ctx
+            source = d.find discoveryContext
         }
 
         return source != null ? new WorkflowConfigurationImpl(source) : null
