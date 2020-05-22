@@ -11,11 +11,9 @@ import gwf.wfm.workflow.WorkflowConfigurationImpl
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import javax.ejb.Stateless
 import javax.enterprise.inject.Instance
 import javax.inject.Inject
 
-@Stateless
 class WorkflowManager {
 
     private static final Logger log = LoggerFactory.getLogger(WorkflowManager)
