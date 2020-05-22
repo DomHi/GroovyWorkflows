@@ -1,4 +1,4 @@
-package gwf.common;
+package gwf.workflows;
 
 import gwf.api.WorkflowManager;
 import org.slf4j.Logger;
@@ -12,7 +12,7 @@ import java.time.Duration;
 
 @Singleton
 @Startup
-public class StartupTest {
+class StartupTest {
 
 	private static final Logger log = LoggerFactory.getLogger(StartupTest.class);
 

@@ -1,11 +1,18 @@
 
 plugins {
+    id 'war'
     id 'groovy'
 }
 
 dependencies {
-    compileOnly project(':subproject:workflowmanager-api')
-    compileOnly project(':subproject:workflowmanager')
 
+    providedCompile platform(project(':platform:base'))
+
+    providedCompile 'javax:javaee-api'
+    providedCompile 'org.slf4j:slf4j-api'
+
+    implementation project(':subproject:workflowmanager-api')
     implementation project(':subproject:workflowmanager-util')
+
+    runtimeOnly project(':subproject:workflowmanager')
 }
