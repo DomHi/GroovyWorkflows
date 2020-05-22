@@ -1,6 +1,10 @@
 package gwf.api;
 
+import gwf.api.exception.WorkflowManagerException;
 import gwf.api.workflow.WorkflowExecutionContext;
+
+import javax.enterprise.inject.Instance;
+import javax.enterprise.inject.spi.CDI;
 
 /**
  * Implementations of this interface are an entry point for using the worklow API.
@@ -21,4 +25,18 @@ public interface WorkflowManager {
 	 * @param ctx {@code WorkflowExecutionContext} which will be used to locate and initialize the workflow
 	 */
 	void execute(WorkflowExecutionContext ctx);
+
+	static WorkflowManager getInstance() {
+		try {
+			Instance<WorkflowManager> instance = CDI.current().select(WorkflowManager.class);
+			if (instance.isUnsatisfied()) {
+				throw new WorkflowManagerException("No injectable instance of WorkflowManager found.");
+			}
+			return instance.get();
+		} catch(WorkflowManagerException e) {
+			throw e;
+		} catch(RuntimeException e) {
+			throw new WorkflowManagerException("Failed to obtain instance of WorkflowManager.", e);
+		}
+	}
 }

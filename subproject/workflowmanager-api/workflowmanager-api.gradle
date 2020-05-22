@@ -7,6 +7,7 @@ dependencies {
     api platform(project(':platform:base'))
     annotationProcessor platform(project(':platform:base'))
 
+    api 'javax.enterprise:cdi-api'
     api 'org.slf4j:slf4j-api'
 
     api 'org.codehaus.groovy:groovy'
