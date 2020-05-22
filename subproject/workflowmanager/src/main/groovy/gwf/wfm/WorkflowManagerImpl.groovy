@@ -1,5 +1,6 @@
 package gwf.wfm
 
+import gwf.api.WorkflowManager
 import gwf.api.workflow.ImmutableWorkflowExecutionContext
 import gwf.api.workflow.WorkflowConfiguration
 import gwf.api.workflow.WorkflowExecutionContext
@@ -14,23 +15,22 @@ import org.slf4j.LoggerFactory
 import javax.enterprise.inject.Instance
 import javax.inject.Inject
 
-class WorkflowManager {
+class WorkflowManagerImpl implements WorkflowManager {
 
-    private static final Logger log = LoggerFactory.getLogger(WorkflowManager)
+    private static final Logger log = LoggerFactory.getLogger(WorkflowManagerImpl)
 
     @Inject
     private Instance<WorkflowDiscovery> discoveries;
 
-    String getGreeting() {
-        /blubb/
+    @Override
+    void execute(String workflowName) {
+        execute(getCtx(workflowName))
     }
 
-    void doSomething() {
-        String wfName = "myTest"
+    @Override
+    void execute(WorkflowExecutionContext ctx) {
 
-        WorkflowExecutionContext ctx = getCtx(wfName)
         WorkflowConfiguration wf = getWorkflow(ctx)
-
         WorkflowDelegateImpl delegate = new WorkflowDelegateImpl(ctx)
 
         if(wf != null) {
@@ -41,6 +41,10 @@ class WorkflowManager {
         }
 
         delegate.taskConfig.tasks*.execute()
+    }
+
+    String getGreeting() {
+        /blubb/
     }
 
     private WorkflowExecutionContext getCtx(String wfName) {

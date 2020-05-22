@@ -1,6 +1,6 @@
 package gwf.common;
 
-import gwf.wfm.WorkflowManager;
+import gwf.api.WorkflowManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +34,7 @@ public class StartupTest {
 	private void blubb(Timer timer) {
 		log.info("Timeout for {}", timer.getInfo());
 		try {
-			workflowManager.doSomething();
+			workflowManager.execute("myTest");
 		} catch (RuntimeException e) {
 			log.error("Exception while doing something.", e);
 		}

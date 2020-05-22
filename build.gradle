@@ -17,6 +17,8 @@ dependencies {
     providedCompile 'javax:javaee-api'
     providedCompile 'org.slf4j:slf4j-api'
 
-    implementation project(':subproject:workflowmanager')
+    implementation project(':subproject:workflowmanager-api')
     implementation project(':subproject:workflows')
+
+    runtimeOnly project(':subproject:workflowmanager')
 }

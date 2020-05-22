@@ -7,7 +7,7 @@ class WorkflowManagerSpec extends Specification {
     def "ScriptManager says blubb"() {
 
         when:
-        def greeting = new WorkflowManager().greeting
+        def greeting = new WorkflowManagerImpl().greeting
 
         then:
         greeting == 'blubb'
