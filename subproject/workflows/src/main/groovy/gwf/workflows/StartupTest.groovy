@@ -32,7 +32,7 @@ class StartupTest {
 
 	@Timeout
 	private void blubb(Timer timer) {
-		log.info("Timeout for {}", timer.getInfo());
+		log.info("timeout");
 		try {
 			workflowManager.execute("myTest");
 		} catch (RuntimeException e) {
