@@ -16,10 +16,12 @@ dependencies {
 
         runtime 'org.slf4j:slf4j-simple:1.7.30'
 
-        // optional dependencies for using Spock
-        runtime "net.bytebuddy:byte-buddy:1.10.10"      // allows mocking of classes (in addition to interfaces)
-        runtime "org.objenesis:objenesis:3.1"           // allows mocking of classes without default constructor (together with CGLIB)
+        // Arquillian dependencies
+        api "org.jboss.arquillian.junit:arquillian-junit-container:1.6.0.Final"
 
+        runtime "org.arquillian.container:arquillian-chameleon-junit-container-starter:1.0.0.CR6"
+
+        // other dependencies
         runtime "com.h2database:h2:1.4.200"
     }
 }

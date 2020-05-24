@@ -18,14 +18,11 @@ dependencies {
     // Testing dependencies
     testImplementation platform(project(':platform:test'))
 
-    testImplementation 'org.spockframework:spock-core'
     testImplementation 'org.codehaus.groovy:groovy-all'
 
-    testRuntimeOnly 'org.slf4j:slf4j-simple'
+    testImplementation 'org.jboss.arquillian.junit:arquillian-junit-container'
 
-    // optional dependencies for using Spock
-    testRuntimeOnly 'net.bytebuddy:byte-buddy'
-    testRuntimeOnly 'org.objenesis:objenesis'
+    testRuntimeOnly 'org.slf4j:slf4j-simple'
 
     testRuntimeOnly 'com.h2database:h2'
 }
