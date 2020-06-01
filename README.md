@@ -16,3 +16,21 @@ TODO
 ### Execution
 
 TODO
+
+## API
+
+### Workflow executor
+
+TODO
+
+### Execution context
+
+TODO
+
+### Workflow discovery
+
+TODO
+
+### Implementing tasks
+
+TODO
