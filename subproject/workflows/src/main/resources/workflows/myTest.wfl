@@ -16,8 +16,7 @@ tasks {
         log.info "task 1 configured"
     }
 
-    task(GenericAction) {
-        name = "task 2"
+    task("task 2", GenericAction) {
 
         action {
             log.info "$name first action"

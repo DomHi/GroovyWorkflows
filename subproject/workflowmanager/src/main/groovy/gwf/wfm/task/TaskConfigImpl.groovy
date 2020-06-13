@@ -3,6 +3,7 @@ package gwf.wfm.task
 import gwf.api.task.TaskConfig
 import gwf.api.task.WorkflowTask
 import gwf.api.task.instance.TaskInstantiator
+import gwf.api.util.ClosureUtil
 
 class TaskConfigImpl implements TaskConfig {
 
@@ -31,10 +32,7 @@ class TaskConfigImpl implements TaskConfig {
 
         def impl = instantiator.create(clazz)
 
-        // TODO implement utilty class to handle delegation
-        def clone = (Closure) cl.clone()
-        clone.setDelegate(impl)
-        clone.call()
+        ClosureUtil.delegateFirst(cl, impl).call()
 
         tasks.add(impl)
     }
@@ -45,7 +43,12 @@ class TaskConfigImpl implements TaskConfig {
             @DelegatesTo.Target Class<T> clazz,
             @DelegatesTo(strategy = Closure.DELEGATE_FIRST, genericTypeIndex = 0) Closure<?> cl) {
 
-        // TODO implement
+        def impl = instantiator.create(clazz)
+        impl.setName(name)
+
+        ClosureUtil.delegateFirst(cl, impl).call()
+
+        tasks.add(impl)
     }
 
     @Override
