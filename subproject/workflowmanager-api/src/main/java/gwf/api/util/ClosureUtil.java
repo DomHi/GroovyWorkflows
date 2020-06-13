@@ -16,4 +16,11 @@ public class ClosureUtil {
 		clone.setResolveStrategy(strategy);
 		return clone;
 	}
+
+	public static Closure<?> delegateFirst(Closure<?> cl, Object delegate) {
+		Closure<?> clone = (Closure<?>) cl.clone();
+		clone.setResolveStrategy(Closure.DELEGATE_FIRST);
+		clone.setDelegate(delegate);
+		return clone;
+	}
 }

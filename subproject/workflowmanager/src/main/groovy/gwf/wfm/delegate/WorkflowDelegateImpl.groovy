@@ -3,8 +3,11 @@ package gwf.wfm.delegate
 import gwf.api.delegate.WorkflowDelegateBase
 import gwf.api.executor.ExecutorConfig
 import gwf.api.task.TaskConfig
+import gwf.api.task.WorkflowTask
+import gwf.api.util.ClosureUtil
 import gwf.api.workflow.WorkflowExecutionContext
 import gwf.wfm.executor.ExecutorConfigImpl
+import gwf.wfm.task.CdiTaskInstantiator
 import gwf.wfm.task.TaskConfigImpl
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -17,7 +20,7 @@ class WorkflowDelegateImpl implements WorkflowDelegateBase {
 
     private ExecutorConfig executorConfig
 
-    private TaskConfig taskConfig
+    private List<TaskConfig> taskConfigs = []
 
     WorkflowDelegateImpl(WorkflowExecutionContext ctx) {
         this.ctx = ctx
@@ -39,25 +42,22 @@ class WorkflowDelegateImpl implements WorkflowDelegateBase {
         if(executorConfig == null) {
             executorConfig = new ExecutorConfigImpl()
         }
-        delegate(executorConfig, cl)
+        ClosureUtil.delegateFirst(cl, executorConfig).call()
     }
 
     @Override
     void tasks(@DelegatesTo(value = TaskConfig, strategy = Closure.DELEGATE_FIRST) Closure<?> cl) {
-        if(taskConfig == null) {
-            taskConfig = new TaskConfigImpl()
+        def newTasks = new TaskConfigImpl(new CdiTaskInstantiator())
+        ClosureUtil.delegateFirst(cl, newTasks).call()
+        taskConfigs.add(newTasks)
+    }
+
+    Collection<WorkflowTask> getTasks() {
+        def tasks = []
+        taskConfigs.each {
+            tasks.add it.tasks
         }
-        delegate(taskConfig, cl)
-    }
-
-    TaskConfig getTaskConfig() {
-        taskConfig
-    }
-
-    private void delegate(delegate, Closure<?> cl) {
-        def clone = cl.rehydrate(delegate, this, this)
-        clone.resolveStrategy = Closure.DELEGATE_FIRST
-        clone.call()
+        tasks
     }
 
     private void initLogging() {

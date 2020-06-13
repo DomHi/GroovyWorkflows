@@ -2,22 +2,34 @@ package gwf.wfm.task
 
 import gwf.api.task.TaskConfig
 import gwf.api.task.WorkflowTask
-
-import javax.enterprise.inject.spi.CDI
+import gwf.api.task.instance.TaskInstantiator
 
 class TaskConfigImpl implements TaskConfig {
 
+    private TaskInstantiator instantiator
+
     private List<WorkflowTask> tasks = new ArrayList<>()
 
-    @Override
-    <T extends WorkflowTask> void task(Class<T> clazz, Closure<?> cl) {
-        // TODO implement class instantiator instead of hard-coding lookup here
-        def instance = CDI.current().select(clazz)
+    TaskConfigImpl(TaskInstantiator instantiator) {
+        this.instantiator = instantiator
+    }
 
-        if(instance.unsatisfied) {
-            throw new IllegalArgumentException("Invalid $clazz")
-        }
-        def impl = instance.get()
+    @Override
+    void setTaskInstantiator(TaskInstantiator instantiator) {
+        this.instantiator = instantiator
+    }
+
+    @Override
+    TaskInstantiator getTaskInstantiator() {
+        instantiator
+    }
+
+    @Override
+    <T extends WorkflowTask> void task(
+            @DelegatesTo.Target Class<T> clazz,
+            @DelegatesTo(strategy = Closure.DELEGATE_FIRST, genericTypeIndex = 0) Closure<?> cl) {
+
+        def impl = instantiator.create(clazz)
 
         // TODO implement utilty class to handle delegation
         def clone = (Closure) cl.clone()
@@ -25,6 +37,15 @@ class TaskConfigImpl implements TaskConfig {
         clone.call()
 
         tasks.add(impl)
+    }
+
+    @Override
+    <T extends WorkflowTask> void task(
+            String name,
+            @DelegatesTo.Target Class<T> clazz,
+            @DelegatesTo(strategy = Closure.DELEGATE_FIRST, genericTypeIndex = 0) Closure<?> cl) {
+
+        // TODO implement
     }
 
     @Override

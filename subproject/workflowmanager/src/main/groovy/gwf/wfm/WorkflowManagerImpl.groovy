@@ -40,11 +40,7 @@ class WorkflowManagerImpl implements WorkflowManager {
             return
         }
 
-        delegate.taskConfig.tasks*.execute()
-    }
-
-    String getGreeting() {
-        /blubb/
+        delegate.tasks*.execute()
     }
 
     private WorkflowExecutionContext getCtx(String wfName) {
