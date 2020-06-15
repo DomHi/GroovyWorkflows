@@ -8,8 +8,8 @@ dependencies {
 
     implementation platform(project(':platform:base'))
 
-    api 'javax.enterprise:cdi-api'
-    implementation 'org.slf4j:slf4j-api'
+    compileOnly 'javax.enterprise:cdi-api'
+    compileOnly 'org.slf4j:slf4j-api'
 
     api 'org.codehaus.groovy:groovy'
 
