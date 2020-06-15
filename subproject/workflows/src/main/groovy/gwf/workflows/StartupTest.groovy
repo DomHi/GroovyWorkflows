@@ -35,7 +35,7 @@ class StartupTest {
 		log.info("timeout");
 		try {
 			workflowManager.execute("myTest");
-		} catch (RuntimeException e) {
+		} catch (Exception e) {
 			log.error("Exception while doing something.", e);
 		}
 	}
