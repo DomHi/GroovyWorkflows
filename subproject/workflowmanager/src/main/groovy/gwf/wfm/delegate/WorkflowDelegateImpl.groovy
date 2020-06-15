@@ -55,7 +55,7 @@ class WorkflowDelegateImpl implements WorkflowDelegateBase {
     Collection<WorkflowTask> getTasks() {
         def tasks = []
         taskConfigs.each {
-            tasks.add it.tasks
+            tasks.addAll it.tasks
         }
         tasks
     }
