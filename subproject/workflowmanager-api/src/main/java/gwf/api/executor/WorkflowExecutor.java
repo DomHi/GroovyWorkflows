@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface WorkflowExecutor {
 
-	<T extends TaskExecutionResult> List<T> execute(TaskConfig taskConfig);
+	List<TaskExecutionResult> execute(TaskConfig taskConfig);
 }

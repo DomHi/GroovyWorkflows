@@ -9,5 +9,5 @@ public interface WorkflowTask {
 
 	void setName(String name);
 
-	<T extends TaskExecutionResult> T execute();
+	TaskExecutionResult execute();
 }

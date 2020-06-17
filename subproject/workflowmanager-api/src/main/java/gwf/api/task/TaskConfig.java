@@ -44,5 +44,5 @@ public interface TaskConfig {
 			@DelegatesTo(strategy = Closure.DELEGATE_FIRST, genericTypeIndex = 0) Closure<?> cl
 	);
 
-	<T extends WorkflowTask> Collection<T> getTasks();
+	Collection<WorkflowTask> getTasks();
 }
