@@ -1,7 +1,7 @@
 package gwf.api;
 
 import gwf.api.exception.WorkflowManagerException;
-import gwf.api.workflow.WorkflowExecutionContext;
+import gwf.api.workflow.context.WorkflowContext;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.spi.CDI;
@@ -24,7 +24,7 @@ public interface WorkflowManager {
 	 *
 	 * @param ctx {@code WorkflowExecutionContext} which will be used to locate and initialize the workflow
 	 */
-	void execute(WorkflowExecutionContext ctx);
+	void execute(WorkflowContext ctx);
 
 	static WorkflowManager getInstance() {
 		try {

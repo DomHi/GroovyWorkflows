@@ -5,9 +5,9 @@ import gwf.api.discovery.ImmutableWorkflowDiscoveryContext;
 import gwf.api.discovery.WorkflowDiscovery;
 import gwf.api.discovery.WorkflowDiscoveryContext;
 import gwf.api.task.WorkflowTask;
-import gwf.api.workflow.ImmutableWorkflowExecutionContext;
+import gwf.api.workflow.ImmutableWorkflowContext;
 import gwf.api.workflow.WorkflowConfiguration;
-import gwf.api.workflow.WorkflowExecutionContext;
+import gwf.api.workflow.context.WorkflowContext;
 import gwf.wfm.impl.delegate.WorkflowDelegateImpl;
 import gwf.wfm.impl.workflow.WorkflowConfigurationImpl;
 import org.slf4j.Logger;
@@ -30,7 +30,7 @@ public class WorkflowManagerImpl implements WorkflowManager {
 	}
 
 	@Override
-	public void execute(WorkflowExecutionContext ctx) {
+	public void execute(WorkflowContext ctx) {
 		WorkflowConfiguration wf = getWorkflow(ctx);
 		WorkflowDelegateImpl delegate = new WorkflowDelegateImpl(ctx);
 
@@ -44,13 +44,13 @@ public class WorkflowManagerImpl implements WorkflowManager {
 		delegate.getTasks().forEach(WorkflowTask::execute);
 	}
 
-	private WorkflowExecutionContext getCtx(String wfName) {
-		return ImmutableWorkflowExecutionContext.builder()
+	private WorkflowContext getCtx(String wfName) {
+		return ImmutableWorkflowContext.builder()
 				.workflowName(wfName)
 				.build();
 	}
 
-	private WorkflowConfiguration getWorkflow(WorkflowExecutionContext ctx) {
+	private WorkflowConfiguration getWorkflow(WorkflowContext ctx) {
 		WorkflowDiscoveryContext discoveryContext = ImmutableWorkflowDiscoveryContext.builder()
 				.name(ctx.getWorkflowName())
 				.release(ctx.getRelease())

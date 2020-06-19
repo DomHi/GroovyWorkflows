@@ -4,7 +4,7 @@ import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import gwf.api.executor.ExecutorConfig;
 import gwf.api.task.TaskConfig;
-import gwf.api.workflow.WorkflowExecutionContext;
+import gwf.api.workflow.context.WorkflowContext;
 import org.slf4j.Logger;
 
 /**
@@ -21,7 +21,7 @@ public interface WorkflowDelegateBase {
 	/**
 	 * @return context object for the current execution
 	 */
-	WorkflowExecutionContext getContext();
+	WorkflowContext getContext();
 
 	/**
 	 * @param cl Closure used to configure executors

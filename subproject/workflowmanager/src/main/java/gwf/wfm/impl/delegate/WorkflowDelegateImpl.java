@@ -6,7 +6,7 @@ import gwf.api.executor.ExecutorConfig;
 import gwf.api.task.TaskConfig;
 import gwf.api.task.WorkflowTask;
 import gwf.api.util.ClosureUtil;
-import gwf.api.workflow.WorkflowExecutionContext;
+import gwf.api.workflow.context.WorkflowContext;
 import gwf.wfm.impl.executor.ExecutorConfigImpl;
 import gwf.wfm.impl.task.CdiTaskInstantiator;
 import gwf.wfm.impl.task.TaskConfigImpl;
@@ -21,13 +21,13 @@ public class WorkflowDelegateImpl implements WorkflowDelegateBase {
 
 	private Logger log;
 
-	private final WorkflowExecutionContext ctx;
+	private final WorkflowContext ctx;
 
 	private ExecutorConfig executorConfig;
 
 	private final List<TaskConfig> taskConfigs = new ArrayList<>();
 
-	public WorkflowDelegateImpl(WorkflowExecutionContext ctx) {
+	public WorkflowDelegateImpl(WorkflowContext ctx) {
 		this.ctx = ctx;
 		initLogging();
 	}
@@ -38,7 +38,7 @@ public class WorkflowDelegateImpl implements WorkflowDelegateBase {
 	}
 
 	@Override
-	public WorkflowExecutionContext getContext() {
+	public WorkflowContext getContext() {
 		return ctx;
 	}
 
