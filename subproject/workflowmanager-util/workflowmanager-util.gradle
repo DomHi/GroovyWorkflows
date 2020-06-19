@@ -1,10 +1,14 @@
 
 plugins {
-    id 'groovy'
+    id 'java-library'
 }
 
 dependencies {
 
     implementation platform(project(':platform:base'))
     implementation project(':subproject:workflowmanager-api')
+
+    api 'org.jdbi:jdbi3-core'
+
+    compileOnly 'org.slf4j:slf4j-api'
 }
