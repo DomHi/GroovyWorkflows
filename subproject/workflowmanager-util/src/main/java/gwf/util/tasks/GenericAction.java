@@ -11,7 +11,7 @@ public class GenericAction extends AbstractWorkflowTask {
 
 	private final List<Closure<?>> taskActions = new ArrayList<>();
 
-	void action(Closure<?> cl) {
+	public void action(Closure<?> cl) {
 		taskActions.add(ClosureUtil.delegateFirst(cl));
 	}
 
