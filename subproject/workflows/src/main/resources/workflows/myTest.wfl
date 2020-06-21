@@ -1,7 +1,8 @@
 
 package workflows
 
-import gwf.util.tasks.GenericAction
+import gwf.util.task.ExecuteSql
+import gwf.util.task.GenericAction
 
 log.info 'Workflow found in workflows'
 
@@ -13,7 +14,7 @@ tasks {
 
     task(GenericAction) {
         name = "task 1"
-        log.info "task 1 configured"
+        log.info "$name configured"
     }
 
     task("task 2", GenericAction) {
@@ -26,6 +27,15 @@ tasks {
             log.info "$name second action"
         }
 
-        log.info "task 2 configured"
+        log.info "$name configured"
+    }
+
+    task("sql task", ExecuteSql) {
+
+        sql {
+            "select * from dual"
+        }
+
+        log.info "$name configured"
     }
 }

@@ -1,4 +1,4 @@
-package gwf.util.tasks;
+package gwf.util.task;
 
 import gwf.api.task.WorkflowTask;
 

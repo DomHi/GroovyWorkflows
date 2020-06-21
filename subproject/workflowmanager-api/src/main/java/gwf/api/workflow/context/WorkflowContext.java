@@ -39,17 +39,14 @@ public class WorkflowContext {
 	}
 
 	public static <T,U> void add(Class<U> clazz,T config) {
-		if (!clazz.isAssignableFrom(config.getClass())) {
-			throw new ContextException("Given object is not of type " + clazz);
-		}
 		U instance = find(clazz);
 		if (instance instanceof MergeableContext) {
-			getCtx().put(clazz, ((MergeableContext) instance).merge(config));
+			putCtx(clazz, ((MergeableContext) instance).merge(config));
 			return;
 		} else if (instance != null) {
 			throw new ContextException("Contextual type already defined for " + clazz);
 		}
-		getCtx().put(clazz, config);
+		putCtx(clazz, config);
 	}
 
 	public static void clear() {
@@ -58,6 +55,13 @@ public class WorkflowContext {
 
 	private static Map<Class<?>, Object> getCtx() {
 		return ctx.get();
+	}
+
+	private static void putCtx(Class<?> clazz, Object impl) {
+		if(!clazz.isAssignableFrom(impl.getClass())) {
+			throw new ContextException("Given object is not of type " + clazz);
+		}
+		getCtx().put(clazz, impl);
 	}
 
 	private static Class<?> getCtxClass(Class<?> clazz) {
