@@ -2,6 +2,7 @@ package gwf.wfm.impl.delegate;
 
 import groovy.lang.Closure;
 import gwf.api.delegate.WorkflowDelegateBase;
+import gwf.api.discovery.WorkflowDiscoveryContext;
 import gwf.api.executor.ExecutorConfig;
 import gwf.api.task.TaskConfig;
 import gwf.api.task.WorkflowTask;
@@ -21,25 +22,17 @@ public class WorkflowDelegateImpl implements WorkflowDelegateBase {
 
 	private Logger log;
 
-	private final WorkflowContext ctx;
-
 	private ExecutorConfig executorConfig;
 
 	private final List<TaskConfig> taskConfigs = new ArrayList<>();
 
-	public WorkflowDelegateImpl(WorkflowContext ctx) {
-		this.ctx = ctx;
+	public WorkflowDelegateImpl() {
 		initLogging();
 	}
 
 	@Override
 	public Logger getLog() {
 		return log;
-	}
-
-	@Override
-	public WorkflowContext getContext() {
-		return ctx;
 	}
 
 	@Override
@@ -70,6 +63,7 @@ public class WorkflowDelegateImpl implements WorkflowDelegateBase {
 	}
 
 	private String getLoggerName() {
-		return String.format("wfm.%s", ctx.getWorkflowName());
+		WorkflowDiscoveryContext ctx = WorkflowContext.get(WorkflowDiscoveryContext.class);
+		return String.format("wfm.%s", ctx.getName());
 	}
 }
