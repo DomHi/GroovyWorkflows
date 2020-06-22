@@ -5,9 +5,8 @@ import gwf.api.discovery.ImmutableWorkflowDiscoveryContext;
 import gwf.api.discovery.WorkflowDiscovery;
 import gwf.api.discovery.WorkflowDiscoveryContext;
 import gwf.api.task.WorkflowTask;
-import gwf.api.workflow.ImmutableWorkflowExecutionContext;
 import gwf.api.workflow.WorkflowConfiguration;
-import gwf.api.workflow.WorkflowExecutionContext;
+import gwf.api.workflow.context.WorkflowContext;
 import gwf.wfm.impl.delegate.WorkflowDelegateImpl;
 import gwf.wfm.impl.workflow.WorkflowConfigurationImpl;
 import org.slf4j.Logger;
@@ -26,13 +25,19 @@ public class WorkflowManagerImpl implements WorkflowManager {
 
 	@Override
 	public void execute(String workflowName) {
-		execute(getCtx(workflowName));
+
+		setCtx(workflowName);
+
+		try {
+			executeInternal();
+		} finally {
+			WorkflowContext.clear();
+		}
 	}
 
-	@Override
-	public void execute(WorkflowExecutionContext ctx) {
-		WorkflowConfiguration wf = getWorkflow(ctx);
-		WorkflowDelegateImpl delegate = new WorkflowDelegateImpl(ctx);
+	private void executeInternal() {
+		WorkflowConfiguration wf = getWorkflow();
+		WorkflowDelegateImpl delegate = new WorkflowDelegateImpl();
 
 		if(wf != null) {
 			wf.configure(delegate);
@@ -44,22 +49,18 @@ public class WorkflowManagerImpl implements WorkflowManager {
 		delegate.getTasks().forEach(WorkflowTask::execute);
 	}
 
-	private WorkflowExecutionContext getCtx(String wfName) {
-		return ImmutableWorkflowExecutionContext.builder()
-				.workflowName(wfName)
-				.build();
+	private void setCtx(String wfName) {
+		WorkflowContext.add(
+				WorkflowDiscoveryContext.class,
+				ImmutableWorkflowDiscoveryContext.builder()
+					.name(wfName)
+					.build()
+		);
 	}
 
-	private WorkflowConfiguration getWorkflow(WorkflowExecutionContext ctx) {
-		WorkflowDiscoveryContext discoveryContext = ImmutableWorkflowDiscoveryContext.builder()
-				.name(ctx.getWorkflowName())
-				.release(ctx.getRelease())
-				.swVersion(ctx.getSwVersion())
-				.technology(ctx.getTechnology())
-				.build();
-
+	private WorkflowConfiguration getWorkflow() {
 		return discoveries.stream()
-				.map(d -> d.find(discoveryContext))
+				.map(WorkflowDiscovery::find)
 				.filter(Objects::nonNull)
 				.findFirst()
 				.map(WorkflowConfigurationImpl::new)

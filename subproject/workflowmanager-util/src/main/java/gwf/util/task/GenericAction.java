@@ -1,4 +1,4 @@
-package gwf.util.tasks;
+package gwf.util.task;
 
 import groovy.lang.Closure;
 import gwf.api.task.TaskExecutionResult;
