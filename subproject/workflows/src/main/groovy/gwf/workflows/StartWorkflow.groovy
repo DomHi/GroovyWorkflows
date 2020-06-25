@@ -5,11 +5,13 @@ import gwf.api.WorkflowManager
 import gwf.api.workflow.context.WorkflowContext
 import gwf.util.task.context.DefaultDatabaseConfig
 
+import javax.ejb.Stateless
 import javax.inject.Inject
 import javax.naming.InitialContext
 import javax.sql.DataSource
 
 @Slf4j
+@Stateless
 class StartWorkflow {
 
     @Inject

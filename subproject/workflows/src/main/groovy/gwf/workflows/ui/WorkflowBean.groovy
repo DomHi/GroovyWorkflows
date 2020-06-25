@@ -3,13 +3,12 @@ package gwf.workflows.ui
 import groovy.util.logging.Slf4j
 import gwf.workflows.StartWorkflow
 
-import javax.annotation.PostConstruct
-import javax.enterprise.context.ApplicationScoped
+import javax.enterprise.context.RequestScoped
 import javax.inject.Inject
 import javax.inject.Named
 
 @Named("workflows")
-@ApplicationScoped
+@RequestScoped
 @Slf4j
 class WorkflowBean {
 
