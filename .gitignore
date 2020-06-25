@@ -11,3 +11,6 @@ build
 .settings
 .classpath
 .project
+
+# Ignore properties file
+custom.properties

@@ -4,3 +4,27 @@ allprojects {
         mavenCentral()
     }
 }
+
+def props = readProperties()
+
+task deploy(type: Copy) {
+
+    from tasks.getByPath(":subproject:workflows:war")
+    destinationDir file(props."deploy.dir")
+}
+
+def readProperties() {
+    def properties = new Properties()
+
+    file("default.properties").withInputStream {
+        properties.load(it)
+    }
+
+    def custom = file("custom.properties")
+    if(custom.exists()) {
+        custom.withInputStream {
+            properties.load(it)
+        }
+    }
+    return properties
+}
