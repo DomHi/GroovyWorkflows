@@ -1,36 +1,23 @@
 # GroovyWorkflows
 
-## Introduction
+## Documentation
 
-This project aims to provide a [workflow](https://en.wikipedia.org/wiki/Workflow) mechanism in the form of a
-declarative [Groovy DSL](https://groovy-lang.org).
+See [here](docs/index.md).
 
-Single units of work are organised into [tasks](/docs/tasks.md).
+## Subprojects
 
-## Different phases of workflow execution
+#### workflowmanager-api
 
-### Configuration
+    workflowmanager API
 
-TODO
+#### workflowmanager
 
-### Execution
+    implementation of workflowmanager API
 
-TODO
+#### workflowmanager-util
 
-## API
+    utility project to provide task implementations for common usecases
 
-### Workflow executor
+#### workflows
 
-TODO
-
-### Execution context
-
-TODO
-
-### Workflow discovery
-
-TODO
-
-### Implementing tasks
-
-TODO
+    sample project to demonstrate usage of the API
