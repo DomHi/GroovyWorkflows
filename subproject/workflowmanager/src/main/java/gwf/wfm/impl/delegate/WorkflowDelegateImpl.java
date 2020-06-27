@@ -31,7 +31,7 @@ public class WorkflowDelegateImpl implements WorkflowDelegateBase {
 	}
 
 	@Override
-	public Logger getLog() {
+	public Logger getLogger() {
 		return log;
 	}
 

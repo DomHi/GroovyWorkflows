@@ -15,7 +15,7 @@ public interface WorkflowDelegateBase {
 	/**
 	 * @return Logger for the current workflow context
 	 */
-	Logger getLog();
+	Logger getLogger();
 
 	/**
 	 * @param cl Closure used to configure executors
