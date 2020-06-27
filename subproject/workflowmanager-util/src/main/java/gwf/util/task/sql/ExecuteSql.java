@@ -1,8 +1,9 @@
-package gwf.util.task;
+package gwf.util.task.sql;
 
 import groovy.lang.Closure;
 import gwf.api.task.TaskExecutionResult;
 import gwf.api.workflow.context.WorkflowContext;
+import gwf.util.task.AbstractWorkflowTask;
 import gwf.util.task.context.DefaultDatabaseConfig;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.statement.SqlLogger;

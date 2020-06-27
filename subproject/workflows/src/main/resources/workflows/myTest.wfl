@@ -1,7 +1,7 @@
 
 package workflows
 
-import gwf.util.task.ExecuteSql
+import gwf.util.task.sql.ExecuteSql
 import gwf.util.task.GenericAction
 
 logger.info 'Workflow found in workflows'
