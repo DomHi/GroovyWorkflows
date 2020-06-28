@@ -1,7 +1,10 @@
 package gwf.util.task.sql;
 
 import groovy.lang.Closure;
+import groovy.lang.DelegatesTo;
+import groovy.lang.GString;
 import gwf.api.task.TaskExecutionResult;
+import gwf.api.util.ClosureUtil;
 import gwf.api.workflow.context.WorkflowContext;
 import gwf.util.task.AbstractWorkflowTask;
 import gwf.util.task.context.DefaultDatabaseConfig;
@@ -19,21 +22,32 @@ public class ExecuteSql extends AbstractWorkflowTask {
 
 	private static final Logger log = LoggerFactory.getLogger(ExecuteSql.class);
 
-	private final List<String> statements = new ArrayList<>();
-
-	public void sql(Closure<String> cl) {
-		statements.add(cl.call());
-	}
+	private final List<Statement> statements = new ArrayList<>();
 
 	@Override
 	public TaskExecutionResult execute() {
-		jdbi().useHandle(
-				handle ->
-					statements.forEach(
-							stmt -> handle.createUpdate(stmt).execute()
-					)
+		Jdbi jdbi = jdbi();
+
+		statements.forEach(
+				stmt -> stmt.execute(jdbi)
 		);
+
 		return null;
+	}
+
+	public void sql(Closure<String> cl) {
+		statements.add(new SimpleStatement(cl.call()));
+	}
+
+	public <T> Select<T> select(Class<T> clazz,
+							@DelegatesTo(strategy = Closure.DELEGATE_FIRST, type="gwf.util.task.sql.Select<T>") Closure<?> cl) {
+		Select<T> s = new Select<>(clazz);
+		Object ret = ClosureUtil.delegateFirst(cl, s).call();
+		if(ret instanceof String || ret instanceof GString) {
+			s.setStatement(ret.toString());
+		}
+		statements.add(s);
+		return s;
 	}
 
 	private Jdbi jdbi() {

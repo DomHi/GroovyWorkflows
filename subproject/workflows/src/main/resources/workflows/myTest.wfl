@@ -33,7 +33,33 @@ tasks {
     task("sql task", ExecuteSql) {
 
         sql {
-            "select * from dual"
+            /
+                create table if not exists WF_USERS (
+                    NAME varchar(255),
+                    ADDRESS varchar(255)
+                )
+            /
+        }
+
+        sql {
+            /
+                insert into WF_USERS
+                    (NAME, ADDRESS)
+                    values ('Hubert', 'Hinterdupfing'),
+                        ('Darth Vader', 'Deathstar')
+            /
+        }
+
+        select(String) {
+
+            bind.name = 'Hubert'
+            define.table = 'WF_USERS'
+
+            "select NAME from <table> where NAME = :name"
+        }.then {
+            it.each {
+                name -> logger.info "selected $name"
+            }
         }
 
         logger.info "$name configured"
