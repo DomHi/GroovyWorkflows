@@ -3,6 +3,7 @@ package gwf.util.task.sql;
 import groovy.lang.Closure;
 import groovy.transform.stc.ClosureParams;
 import groovy.transform.stc.FromString;
+import gwf.api.WorkflowManagerException;
 import gwf.api.util.ClosureUtil;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.statement.Query;
@@ -26,12 +27,19 @@ public class Select<T> extends AbstractJdbiStatement {
 		}
 	}
 
-	public void then(@ClosureParams(value=FromString.class, options="List<T>") Closure<?> cl) {
+	public void then(@ClosureParams(value=FromString.class, options="java.util.List<T>") Closure<?> cl) {
+		if(thenCl != null) {
+			throw new WorkflowManagerException("Multiple THEN closures not supported.");
+		}
 		thenCl = ClosureUtil.delegateFirst(cl);
 	}
 
 	@Override
 	public void execute(Jdbi jdbi) {
+
+		if (thenCl == null) {
+			throw new WorkflowManagerException("THEN closure is missing.");
+		}
 
 		List<T> result = jdbi.withHandle(
 				handle -> {
@@ -43,8 +51,6 @@ public class Select<T> extends AbstractJdbiStatement {
 				}
 		);
 
-		if(thenCl != null) {
-			thenCl.call(result);
-		}
+		thenCl.call(result);
 	}
 }
