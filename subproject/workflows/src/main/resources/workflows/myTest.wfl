@@ -52,8 +52,13 @@ tasks {
 
         select(String) {
 
-            bind.name = 'Hubert'
-            define.table = 'WF_USERS'
+            bind {
+                name = 'Hubert'
+            }
+
+            define {
+                table = 'WF_USERS'
+            }
 
             "select NAME from <table> where NAME = :name"
         }.then {
