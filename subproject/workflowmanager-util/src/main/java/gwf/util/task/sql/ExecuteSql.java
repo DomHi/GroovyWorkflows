@@ -41,13 +41,23 @@ public class ExecuteSql extends AbstractWorkflowTask {
 
 	public <T> Select<T> select(Class<T> clazz,
 							@DelegatesTo(strategy = Closure.DELEGATE_FIRST, type="gwf.util.task.sql.Select<T>") Closure<?> cl) {
-		Select<T> s = new Select<>(clazz);
-		Object ret = ClosureUtil.delegateFirst(cl, s).call();
+		Select<T> s = new Select<>(clazz, false);
+		return internalSelect(s, cl);
+	}
+
+	public <T> Select<T> selectBean(Class<T> clazz,
+							@DelegatesTo(strategy = Closure.DELEGATE_FIRST, type="gwf.util.task.sql.Select<T>") Closure<?> cl) {
+		Select<T> s = new Select<>(clazz, true);
+		return internalSelect(s, cl);
+	}
+
+	private <T> Select<T> internalSelect(Select<T> select, Closure<?> cl) {
+		Object ret = ClosureUtil.delegateFirst(cl, select).call();
 		if(ret instanceof String || ret instanceof GString) {
-			s.setStatement(ret.toString());
+			select.setStatement(ret.toString());
 		}
-		statements.add(s);
-		return s;
+		statements.add(select);
+		return select;
 	}
 
 	private Jdbi jdbi() {

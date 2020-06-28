@@ -50,7 +50,7 @@ tasks {
             /
         }
 
-        select(String) {
+        selectBean(WfUser) {
 
             bind {
                 name = 'Hubert'
@@ -60,13 +60,18 @@ tasks {
                 table = 'WF_USERS'
             }
 
-            "select NAME from <table> where NAME = :name"
+            "select NAME, ADDRESS from <table> where NAME = :name"
         }.then {
             it.each {
-                name -> logger.info "selected $name"
+                user -> logger.info "selected $user.name from $user.address"
             }
         }
 
         logger.info "$name configured"
     }
+}
+
+class WfUser {
+    String name
+    String address
 }

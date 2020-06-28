@@ -13,12 +13,15 @@ import java.util.List;
 public class Select<T> extends AbstractJdbiStatement {
 
 	private final Class<T> clazz;
+	private final boolean isBean;
+
 	private String statement = null;
 
 	private Closure<?> thenCl = null;
 
-	public Select(Class<T> clazz) {
+	public Select(Class<T> clazz, boolean isBean) {
 		this.clazz = clazz;
+		this.isBean = isBean;
 	}
 
 	public void setStatement(String stmt) {
@@ -47,7 +50,11 @@ public class Select<T> extends AbstractJdbiStatement {
 
 					getDefine().forEach(q::define);
 					getBind().forEach(q::bind);
-					return q.mapTo(clazz).list();
+					if (isBean) {
+						return q.mapToBean(clazz).list();
+					} else {
+						return q.mapTo(clazz).list();
+					}
 				}
 		);
 
