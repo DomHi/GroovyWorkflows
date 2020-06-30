@@ -1,0 +1,15 @@
+package workflows.sub
+
+import gwf.util.task.GenericAction
+
+tasks {
+
+    task("inline task 1", GenericAction) {
+
+        action {
+            logger.info "$name executed action 1"
+        }
+
+        logger.info "$name configured"
+    }
+}
