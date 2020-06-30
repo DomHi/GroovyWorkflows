@@ -7,6 +7,7 @@ import gwf.api.executor.ExecutorConfig;
 import gwf.api.task.TaskConfig;
 import gwf.api.task.WorkflowTask;
 import gwf.api.util.ClosureUtil;
+import gwf.api.workflow.WorkflowConfiguration;
 import gwf.api.workflow.context.WorkflowContext;
 import gwf.wfm.impl.executor.ExecutorConfigImpl;
 import gwf.wfm.impl.task.CdiTaskInstantiator;
@@ -22,11 +23,13 @@ public class WorkflowDelegateImpl implements WorkflowDelegateBase {
 
 	private Logger log;
 
+	private final WorkflowConfiguration config;
 	private ExecutorConfig executorConfig;
 
 	private final List<TaskConfig> taskConfigs = new ArrayList<>();
 
-	public WorkflowDelegateImpl() {
+	public WorkflowDelegateImpl(WorkflowConfiguration config) {
+		this.config = config;
 		initLogging();
 	}
 
@@ -37,7 +40,7 @@ public class WorkflowDelegateImpl implements WorkflowDelegateBase {
 
 	@Override
 	public void executor(Closure<?> cl) {
-		if(executorConfig == null) {
+		if (executorConfig == null) {
 			executorConfig = new ExecutorConfigImpl();
 		}
 		ClosureUtil.delegateFirst(cl, executorConfig).call();
@@ -48,6 +51,16 @@ public class WorkflowDelegateImpl implements WorkflowDelegateBase {
 		TaskConfig newTasks = new TaskConfigImpl(new CdiTaskInstantiator());
 		ClosureUtil.delegateFirst(cl, newTasks).call();
 		taskConfigs.add(newTasks);
+	}
+
+	@Override
+	public void inline(String path) {
+		// implement utility which does the stuff listed below
+		// TODO locate inline-workflow
+		// TODO load it as a script
+		// TODO create InlineWorkflowDelegate
+		// TODO configure delegate using workflow
+		// TODO add tasks of delgate to this worklow's tasks
 	}
 
 	public Collection<WorkflowTask> getTasks() {

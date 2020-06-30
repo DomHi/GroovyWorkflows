@@ -12,10 +12,12 @@ import java.net.URI;
 
 public class WorkflowConfigurationImpl implements WorkflowConfiguration {
 
+	private final URI location;
 	private WorkflowScript script;
 
 	public WorkflowConfigurationImpl(URI source) {
-		loadScript(source);
+		this.location = source;
+		loadScript();
 	}
 
 	@Override
@@ -24,14 +26,19 @@ public class WorkflowConfigurationImpl implements WorkflowConfiguration {
 		script.run();
 	}
 
-	private void loadScript(URI source) {
+	@Override
+	public URI getLocation() {
+		return location;
+	}
+
+	private void loadScript() {
 		CompilerConfiguration cc = new CompilerConfiguration();
 		cc.setScriptBaseClass(WorkflowScript.class.getName());
 
 		GroovyShell shell = new GroovyShell(new Binding(), cc);
 		try {
-			this.script = (WorkflowScript) shell.parse(source);
-		} catch(IOException e) {
+			this.script = (WorkflowScript) shell.parse(location);
+		} catch (IOException e) {
 			throw new WorkflowManagerException("Failed to parse script.", e);
 		}
 	}

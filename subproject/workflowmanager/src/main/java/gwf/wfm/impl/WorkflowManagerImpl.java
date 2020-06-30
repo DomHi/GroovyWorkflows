@@ -37,9 +37,9 @@ public class WorkflowManagerImpl implements WorkflowManager {
 
 	private void executeInternal() {
 		WorkflowConfiguration wf = getWorkflow();
-		WorkflowDelegateImpl delegate = new WorkflowDelegateImpl();
+		WorkflowDelegateImpl delegate = new WorkflowDelegateImpl(wf);
 
-		if(wf != null) {
+		if (wf != null) {
 			wf.configure(delegate);
 		} else {
 			log.info("workflow was null.");
@@ -53,8 +53,8 @@ public class WorkflowManagerImpl implements WorkflowManager {
 		WorkflowContext.add(
 				WorkflowDiscoveryContext.class,
 				ImmutableWorkflowDiscoveryContext.builder()
-					.name(wfName)
-					.build()
+						.name(wfName)
+						.build()
 		);
 	}
 

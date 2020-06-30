@@ -28,4 +28,11 @@ public interface WorkflowDelegateBase {
 	 * @param config Closure which will be executed with the TaskConfig delegate
 	 */
 	void tasks(@DelegatesTo(value = TaskConfig.class, strategy = Closure.DELEGATE_FIRST) Closure<?> config);
+
+	/**
+	 * Inline workflow. This will add tasks of given workflow to the current execution.
+	 *
+	 * @param path of the workflow to inline. Will be resolved relative to current workflows location.
+	 */
+	void inline(String path);
 }
