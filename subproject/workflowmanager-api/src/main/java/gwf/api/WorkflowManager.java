@@ -1,7 +1,5 @@
 package gwf.api;
 
-import gwf.api.exception.WorkflowManagerException;
-
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.spi.CDI;
 
@@ -11,24 +9,24 @@ import javax.enterprise.inject.spi.CDI;
  */
 public interface WorkflowManager {
 
-	/**
-	 * Locate and execute a workflow.
-	 *
-	 * @param workflowName name of the workflow which is supposed to be executed
-	 */
-	void execute(String workflowName);
+    /**
+     * Locate and execute a workflow.
+     *
+     * @param workflowName name of the workflow which is supposed to be executed
+     */
+    void execute(String workflowName);
 
-	static WorkflowManager getInstance() {
-		try {
-			Instance<WorkflowManager> instance = CDI.current().select(WorkflowManager.class);
-			if (instance.isUnsatisfied()) {
-				throw new WorkflowManagerException("No injectable instance of WorkflowManager found.");
-			}
-			return instance.get();
-		} catch(WorkflowManagerException e) {
-			throw e;
-		} catch(RuntimeException e) {
-			throw new WorkflowManagerException("Failed to obtain instance of WorkflowManager.", e);
-		}
-	}
+    static WorkflowManager getInstance() {
+        try {
+            Instance<WorkflowManager> instance = CDI.current().select(WorkflowManager.class);
+            if (instance.isUnsatisfied()) {
+                throw new WorkflowManagerException("No injectable instance of WorkflowManager found.");
+            }
+            return instance.get();
+        } catch (WorkflowManagerException e) {
+            throw e;
+        } catch (RuntimeException e) {
+            throw new WorkflowManagerException("Failed to obtain instance of WorkflowManager.", e);
+        }
+    }
 }
