@@ -2,16 +2,15 @@ package gwf.wfm.impl.delegate;
 
 import groovy.lang.Closure;
 import gwf.api.executor.ExecutorConfig;
-import gwf.api.task.WorkflowTask;
+import gwf.api.workflow.WorkflowConfiguration;
 import org.slf4j.Logger;
 
-import java.util.Collection;
-
-public class InlineWorkflowDelegate implements InternalWorkflowDelegate {
+public class InlineWorkflowDelegate extends AbstractWorkflowDelegate {
 
 	private final Logger logger;
 
-	protected InlineWorkflowDelegate(Logger logger) {
+	protected InlineWorkflowDelegate(Logger logger, WorkflowConfiguration cfg) {
+		super(cfg);
 		this.logger = logger;
 	}
 
@@ -26,18 +25,8 @@ public class InlineWorkflowDelegate implements InternalWorkflowDelegate {
 	}
 
 	@Override
-	public void tasks(Closure<?> config) {
-		// TODO implement
-	}
-
-	@Override
 	public void inline(String path) {
 		// TODO implement
-	}
-
-	@Override
-	public Collection<WorkflowTask> getTasks() {
-		return null;
 	}
 
 	@Override

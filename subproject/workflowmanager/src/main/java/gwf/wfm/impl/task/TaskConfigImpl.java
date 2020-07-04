@@ -14,10 +14,14 @@ public class TaskConfigImpl implements TaskConfig {
 
 	private TaskInstantiator instantiator;
 
-	private List<WorkflowTask> tasks = new ArrayList<>();
+	private final List<WorkflowTask> tasks = new ArrayList<>();
 
 	public TaskConfigImpl(TaskInstantiator instantiator) {
 		this.instantiator = instantiator;
+	}
+
+	public TaskConfigImpl(Collection<WorkflowTask> tasks) {
+		this.tasks.addAll(tasks);
 	}
 
 	@Override

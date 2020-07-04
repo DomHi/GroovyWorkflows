@@ -5,8 +5,8 @@ import gwf.api.discovery.ImmutableWorkflowDiscoveryContext;
 import gwf.api.discovery.WorkflowDiscoveryContext;
 import gwf.api.workflow.WorkflowConfiguration;
 import gwf.api.workflow.context.WorkflowContext;
+import gwf.wfm.impl.delegate.AbstractWorkflowDelegate;
 import gwf.wfm.impl.delegate.Delegation;
-import gwf.wfm.impl.delegate.InternalWorkflowDelegate;
 import gwf.wfm.impl.executor.ExecutionPhase;
 import gwf.wfm.impl.workflow.WorkflowConfigurationImpl;
 import gwf.wfm.impl.workflow.WorkflowLocator;
@@ -32,7 +32,7 @@ public class WorkflowManagerImpl implements WorkflowManager {
 
 	private void executeInternal() {
 		WorkflowConfiguration wf = getWorkflow();
-		InternalWorkflowDelegate delegate = Delegation.configuredBy(wf);
+		AbstractWorkflowDelegate delegate = Delegation.initial(wf);
 		ExecutionPhase.run(delegate);
 	}
 

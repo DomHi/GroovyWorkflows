@@ -3,14 +3,14 @@ package gwf.wfm.impl.executor;
 import gwf.api.WorkflowManagerException;
 import gwf.api.executor.ExecutorConfig;
 import gwf.api.executor.WorkflowExecutor;
-import gwf.wfm.impl.delegate.InternalWorkflowDelegate;
+import gwf.wfm.impl.delegate.AbstractWorkflowDelegate;
 
 public class ExecutionPhase {
 
 	private ExecutionPhase() {
 	}
 
-	public static void run(InternalWorkflowDelegate delegate) {
+	public static void run(AbstractWorkflowDelegate delegate) {
 		ExecutorConfig config = delegate.getExecutorConfig();
 		WorkflowExecutor executor = getInstance(config.getExecutorClass());
 		executor.execute(delegate.getTasks());
