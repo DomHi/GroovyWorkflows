@@ -25,11 +25,6 @@ public class InlineWorkflowDelegate extends AbstractWorkflowDelegate {
 	}
 
 	@Override
-	public void inline(String path) {
-		// TODO implement
-	}
-
-	@Override
 	public ExecutorConfig getExecutorConfig() {
 		return null;
 	}
