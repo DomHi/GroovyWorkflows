@@ -1,7 +1,6 @@
 package gwf.wfm.impl.delegate;
 
 import groovy.lang.Closure;
-import gwf.api.delegate.WorkflowDelegateBase;
 import gwf.api.discovery.WorkflowDiscoveryContext;
 import gwf.api.executor.ExecutorConfig;
 import gwf.api.task.TaskConfig;
@@ -19,66 +18,68 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class WorkflowDelegateImpl implements WorkflowDelegateBase {
+public class WorkflowDelegateImpl implements InternalWorkflowDelegate {
 
-    private Logger log;
+	private Logger log;
 
-    private final WorkflowConfiguration config;
-    private final ExecutorConfig executorConfig = new ExecutorConfigImpl();
+	private final WorkflowConfiguration config;
+	private final ExecutorConfig executorConfig = new ExecutorConfigImpl();
 
-    private final List<TaskConfig> taskConfigs = new ArrayList<>();
+	private final List<TaskConfig> taskConfigs = new ArrayList<>();
 
-    public WorkflowDelegateImpl(WorkflowConfiguration config) {
-        this.config = config;
-        initLogging();
-    }
+	public WorkflowDelegateImpl(WorkflowConfiguration config) {
+		this.config = config;
+		initLogging();
+	}
 
-    @Override
-    public Logger getLogger() {
-        return log;
-    }
+	@Override
+	public Logger getLogger() {
+		return log;
+	}
 
-    @Override
-    public void executor(Closure<?> cl) {
-        ClosureUtil.delegateFirst(cl, executorConfig).call();
-    }
+	@Override
+	public void executor(Closure<?> cl) {
+		ClosureUtil.delegateFirst(cl, executorConfig).call();
+	}
 
-    @Override
-    public void tasks(Closure<?> cl) {
-        TaskConfig newTasks = new TaskConfigImpl(new CdiTaskInstantiator());
-        ClosureUtil.delegateFirst(cl, newTasks).call();
-        taskConfigs.add(newTasks);
-    }
+	@Override
+	public void tasks(Closure<?> cl) {
+		TaskConfig newTasks = new TaskConfigImpl(new CdiTaskInstantiator());
+		ClosureUtil.delegateFirst(cl, newTasks).call();
+		taskConfigs.add(newTasks);
+	}
 
-    @Override
-    public void inline(String path) {
-        log.info("inline called with {}", path);
-        // implement utility which does the stuff listed below
-        // TODO locate inline-workflow
-        // TODO load it as a script
-        // TODO create InlineWorkflowDelegate
-        // TODO configure delegate using workflow
-        // TODO add tasks of delgate to this worklow's tasks
-    }
+	@Override
+	public void inline(String path) {
+		log.info("inline called with {}", path);
+		// implement utility which does the stuff listed below
+		// TODO locate inline-workflow
+		// TODO load it as a script
+		// TODO create InlineWorkflowDelegate
+		// TODO configure delegate using workflow
+		// TODO add tasks of delgate to this worklow's tasks
+	}
 
-    public Collection<WorkflowTask> getTasks() {
-        Collection<WorkflowTask> tasks = new ArrayList<>();
-        taskConfigs.forEach(
-                cfg -> tasks.addAll(cfg.getTasks())
-        );
-        return tasks;
-    }
+	@Override
+	public Collection<WorkflowTask> getTasks() {
+		Collection<WorkflowTask> tasks = new ArrayList<>();
+		taskConfigs.forEach(
+				cfg -> tasks.addAll(cfg.getTasks())
+		);
+		return tasks;
+	}
 
-    public ExecutorConfig getExecutorConfig() {
-        return executorConfig;
-    }
+	@Override
+	public ExecutorConfig getExecutorConfig() {
+		return executorConfig;
+	}
 
-    private void initLogging() {
-        log = LoggerFactory.getLogger(getLoggerName());
-    }
+	private void initLogging() {
+		log = LoggerFactory.getLogger(getLoggerName());
+	}
 
-    private String getLoggerName() {
-        WorkflowDiscoveryContext ctx = WorkflowContext.get(WorkflowDiscoveryContext.class);
-        return String.format("wfm.%s", ctx.getName());
-    }
+	private String getLoggerName() {
+		WorkflowDiscoveryContext ctx = WorkflowContext.get(WorkflowDiscoveryContext.class);
+		return String.format("wfm.%s", ctx.getName());
+	}
 }
