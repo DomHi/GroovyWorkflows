@@ -20,56 +20,61 @@ import java.util.List;
 
 public class ExecuteSql extends AbstractWorkflowTask {
 
-	private static final Logger log = LoggerFactory.getLogger(ExecuteSql.class);
+    private static final Logger log = LoggerFactory.getLogger(ExecuteSql.class);
 
-	private final List<Statement> statements = new ArrayList<>();
+    private final List<Statement> statements = new ArrayList<>();
 
-	@Override
-	public TaskExecutionResult execute() {
-		Jdbi jdbi = jdbi();
+    @Override
+    public TaskExecutionResult execute() {
+        Jdbi jdbi = jdbi();
 
-		statements.forEach(
-				stmt -> stmt.execute(jdbi)
-		);
+        statements.forEach(
+                stmt -> stmt.execute(jdbi)
+        );
 
-		return null;
-	}
+        return null;
+    }
 
-	public void sql(Closure<String> cl) {
-		statements.add(new SimpleStatement(cl.call()));
-	}
+    public void sql(@DelegatesTo(SimpleStatement.class) Closure<?> cl) {
+        SimpleStatement stmt = new SimpleStatement();
+        Object ret = ClosureUtil.delegateFirst(cl, stmt).call();
+        if (ret instanceof String || ret instanceof GString) {
+            stmt.setStatement(ret.toString());
+        }
+        statements.add(stmt);
+    }
 
-	public <T> Select<T> select(Class<T> clazz,
-							@DelegatesTo(strategy = Closure.DELEGATE_FIRST, type="gwf.util.task.sql.Select<T>") Closure<?> cl) {
-		Select<T> s = new Select<>(clazz, false);
-		return internalSelect(s, cl);
-	}
+    public <T> Select<T> select(Class<T> clazz,
+                                @DelegatesTo(strategy = Closure.DELEGATE_FIRST, type = "gwf.util.task.sql.Select<T>") Closure<?> cl) {
+        Select<T> s = new Select<>(clazz, false);
+        return internalSelect(s, cl);
+    }
 
-	public <T> Select<T> selectBean(Class<T> clazz,
-							@DelegatesTo(strategy = Closure.DELEGATE_FIRST, type="gwf.util.task.sql.Select<T>") Closure<?> cl) {
-		Select<T> s = new Select<>(clazz, true);
-		return internalSelect(s, cl);
-	}
+    public <T> Select<T> selectBean(Class<T> clazz,
+                                    @DelegatesTo(strategy = Closure.DELEGATE_FIRST, type = "gwf.util.task.sql.Select<T>") Closure<?> cl) {
+        Select<T> s = new Select<>(clazz, true);
+        return internalSelect(s, cl);
+    }
 
-	private <T> Select<T> internalSelect(Select<T> select, Closure<?> cl) {
-		Object ret = ClosureUtil.delegateFirst(cl, select).call();
-		if(ret instanceof String || ret instanceof GString) {
-			select.setStatement(ret.toString());
-		}
-		statements.add(select);
-		return select;
-	}
+    private <T> Select<T> internalSelect(Select<T> select, Closure<?> cl) {
+        Object ret = ClosureUtil.delegateFirst(cl, select).call();
+        if (ret instanceof String || ret instanceof GString) {
+            select.setStatement(ret.toString());
+        }
+        statements.add(select);
+        return select;
+    }
 
-	private Jdbi jdbi() {
-		return Jdbi.create(ds()).setSqlLogger(new SqlLogger() {
-			@Override
-			public void logBeforeExecution(StatementContext context) {
-				log.info("Execute: {}", context.getRenderedSql());
-			}
-		});
-	}
+    private Jdbi jdbi() {
+        return Jdbi.create(ds()).setSqlLogger(new SqlLogger() {
+            @Override
+            public void logBeforeExecution(StatementContext context) {
+                log.info("Execute: {}", context.getRenderedSql());
+            }
+        });
+    }
 
-	private DataSource ds() {
-		return WorkflowContext.get(DefaultDatabaseConfig.class).getDefaultDs();
-	}
+    private DataSource ds() {
+        return WorkflowContext.get(DefaultDatabaseConfig.class).getDefaultDs();
+    }
 }

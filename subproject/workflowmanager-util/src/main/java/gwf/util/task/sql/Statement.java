@@ -2,7 +2,7 @@ package gwf.util.task.sql;
 
 import org.jdbi.v3.core.Jdbi;
 
-public interface Statement {
+public abstract class Statement {
 
-	void execute(Jdbi jdbi);
+    protected abstract void execute(Jdbi jdbi);
 }
