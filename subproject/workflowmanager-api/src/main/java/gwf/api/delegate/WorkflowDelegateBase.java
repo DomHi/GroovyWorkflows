@@ -3,7 +3,7 @@ package gwf.api.delegate;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import gwf.api.executor.ExecutorConfig;
-import gwf.api.task.TaskConfig;
+import gwf.api.task.TaskContainer;
 import org.slf4j.Logger;
 
 /**
@@ -27,7 +27,7 @@ public interface WorkflowDelegateBase {
 	 *
 	 * @param config Closure which will be executed with the TaskConfig delegate
 	 */
-	void tasks(@DelegatesTo(value = TaskConfig.class, strategy = Closure.DELEGATE_FIRST) Closure<?> config);
+	void tasks(@DelegatesTo(value = TaskContainer.class, strategy = Closure.DELEGATE_FIRST) Closure<?> config);
 
 	/**
 	 * Inline workflow. This will add tasks of given workflow to the current execution.

@@ -1,7 +1,7 @@
 package gwf.wfm.impl.task;
 
 import groovy.lang.Closure;
-import gwf.api.task.TaskConfig;
+import gwf.api.task.TaskContainer;
 import gwf.api.task.WorkflowTask;
 import gwf.api.task.instance.TaskInstantiator;
 import gwf.api.util.ClosureUtil;
@@ -10,17 +10,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class TaskConfigImpl implements TaskConfig {
+public class DefaultTaskContainer implements TaskContainer {
 
 	private TaskInstantiator instantiator;
 
 	private final List<WorkflowTask> tasks = new ArrayList<>();
 
-	public TaskConfigImpl(TaskInstantiator instantiator) {
+	public DefaultTaskContainer(TaskInstantiator instantiator) {
 		this.instantiator = instantiator;
 	}
 
-	public TaskConfigImpl(Collection<WorkflowTask> tasks) {
+	public DefaultTaskContainer(Collection<WorkflowTask> tasks) {
 		this.tasks.addAll(tasks);
 	}
 

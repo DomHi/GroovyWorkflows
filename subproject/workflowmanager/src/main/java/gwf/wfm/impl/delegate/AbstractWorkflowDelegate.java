@@ -3,12 +3,12 @@ package gwf.wfm.impl.delegate;
 import groovy.lang.Closure;
 import gwf.api.delegate.WorkflowDelegateBase;
 import gwf.api.executor.ExecutorConfig;
-import gwf.api.task.TaskConfig;
+import gwf.api.task.TaskContainer;
 import gwf.api.task.WorkflowTask;
 import gwf.api.util.ClosureUtil;
 import gwf.api.workflow.WorkflowConfiguration;
 import gwf.wfm.impl.task.CdiTaskInstantiator;
-import gwf.wfm.impl.task.TaskConfigImpl;
+import gwf.wfm.impl.task.DefaultTaskContainer;
 import gwf.wfm.impl.workflow.WorkflowConfigurationImpl;
 import gwf.wfm.impl.workflow.WorkflowLocator;
 
@@ -22,7 +22,7 @@ public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase {
 
 	protected final WorkflowConfiguration config;
 
-	protected final List<TaskConfig> taskConfigs = new ArrayList<>();
+	protected final List<TaskContainer> taskContainers = new ArrayList<>();
 
 	protected AbstractWorkflowDelegate(WorkflowConfiguration config) {
 		this.config = config;
@@ -32,9 +32,9 @@ public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase {
 
 	@Override
 	public void tasks(Closure<?> cl) {
-		TaskConfig newTasks = new TaskConfigImpl(new CdiTaskInstantiator());
+		TaskContainer newTasks = new DefaultTaskContainer(new CdiTaskInstantiator());
 		ClosureUtil.delegateFirst(cl, newTasks).call();
-		taskConfigs.add(newTasks);
+		taskContainers.add(newTasks);
 	}
 
 	@Override
@@ -42,12 +42,12 @@ public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase {
 		getLogger().info("inline called with {}", path);
 		URI inlineUri = locator().relative(config.getLocation(), path);
 		AbstractWorkflowDelegate delgate = Delegation.inlined(this, new WorkflowConfigurationImpl(inlineUri));
-		taskConfigs.add(new TaskConfigImpl(delgate.getTasks()));
+		taskContainers.add(new DefaultTaskContainer(delgate.getTasks()));
 	}
 
 	public Collection<WorkflowTask> getTasks() {
 		Collection<WorkflowTask> tasks = new ArrayList<>();
-		taskConfigs.forEach(
+		taskContainers.forEach(
 				cfg -> tasks.addAll(cfg.getTasks())
 		);
 		return tasks;

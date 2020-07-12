@@ -6,7 +6,7 @@ import gwf.api.task.instance.TaskInstantiator;
 
 import java.util.Collection;
 
-public interface TaskConfig {
+public interface TaskContainer {
 
 	/**
 	 * Set {@code TaskInstantiator} used by this TaskConfig instance.
@@ -24,7 +24,7 @@ public interface TaskConfig {
 	 * Add a {@code WorkflowTask} of given type and configure it using the given {@code Closure}.
 	 *
 	 * @param clazz type of task
-	 * @param cl {@code Closure} used to configure the task
+	 * @param cl    {@code Closure} used to configure the task
 	 */
 	<T extends WorkflowTask> void task(
 			@DelegatesTo.Target Class<T> clazz,
@@ -34,9 +34,9 @@ public interface TaskConfig {
 	/**
 	 * Add a {@code WorkflowTask} of given type and configure it using the given {@code Closure}.
 	 *
-	 * @param name of the new task
+	 * @param name  of the new task
 	 * @param clazz type of task
-	 * @param cl {@code Closure} used to configure the task
+	 * @param cl    {@code Closure} used to configure the task
 	 */
 	<T extends WorkflowTask> void task(
 			String name,
