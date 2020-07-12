@@ -1,4 +1,3 @@
-
 plugins {
     id 'java-platform'
 }
@@ -12,8 +11,7 @@ dependencies {
     api platform('org.jdbi:jdbi3-bom:3.14.1')
 
     constraints {
-        api 'javax:javaee-api:8.0'
-        api 'javax.enterprise:cdi-api:2.0.SP1'
+        api 'javax:javaee-api:7.0'
 
         api 'org.slf4j:slf4j-api:1.7.30'
 
