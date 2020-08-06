@@ -15,7 +15,6 @@ import gwf.wfm.impl.workflow.WorkflowLocator;
 import javax.enterprise.inject.spi.CDI;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase {
@@ -39,14 +38,13 @@ public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase {
 
 	@Override
 	public void inline(String path) {
-		getLogger().info("inline called with {}", path);
 		URI inlineUri = locator().relative(config.getLocation(), path);
-		AbstractWorkflowDelegate delgate = Delegation.inlined(this, new WorkflowConfigurationImpl(inlineUri));
-		taskContainers.add(new DefaultTaskContainer(delgate.getTasks()));
+		AbstractWorkflowDelegate delegate = Delegation.inlined(this, new WorkflowConfigurationImpl(inlineUri));
+		taskContainers.add(new DefaultTaskContainer(delegate.getTasks()));
 	}
 
-	public Collection<WorkflowTask> getTasks() {
-		Collection<WorkflowTask> tasks = new ArrayList<>();
+	public List<WorkflowTask> getTasks() {
+		List<WorkflowTask> tasks = new ArrayList<>();
 		taskContainers.forEach(
 				cfg -> tasks.addAll(cfg.getTasks())
 		);

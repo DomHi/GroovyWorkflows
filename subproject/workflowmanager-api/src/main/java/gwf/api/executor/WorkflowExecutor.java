@@ -1,12 +1,10 @@
 package gwf.api.executor;
 
-import gwf.api.task.TaskExecutionResult;
-import gwf.api.task.WorkflowTask;
+import gwf.api.executor.provider.TaskProvider;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.Map;
 
 public interface WorkflowExecutor {
 
-    List<TaskExecutionResult> execute(Collection<WorkflowTask> tasks);
+	void execute(TaskProvider taskProvider, Map<String, Object> properties);
 }

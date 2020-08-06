@@ -4,7 +4,7 @@ import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import gwf.api.task.instance.TaskInstantiator;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface TaskContainer {
 
@@ -44,5 +44,5 @@ public interface TaskContainer {
 			@DelegatesTo(strategy = Closure.DELEGATE_FIRST, genericTypeIndex = 0) Closure<?> cl
 	);
 
-	Collection<WorkflowTask> getTasks();
+	List<WorkflowTask> getTasks();
 }
