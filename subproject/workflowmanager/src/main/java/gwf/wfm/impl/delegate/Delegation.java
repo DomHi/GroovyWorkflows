@@ -1,6 +1,6 @@
 package gwf.wfm.impl.delegate;
 
-import gwf.api.workflow.WorkflowConfiguration;
+import gwf.wfm.impl.workflow.WorkflowConfiguration;
 
 public class Delegation {
 

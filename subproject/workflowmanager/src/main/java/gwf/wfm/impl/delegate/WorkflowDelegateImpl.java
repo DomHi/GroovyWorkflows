@@ -4,9 +4,9 @@ import groovy.lang.Closure;
 import gwf.api.discovery.WorkflowDiscoveryContext;
 import gwf.api.executor.ExecutorConfig;
 import gwf.api.util.ClosureUtil;
-import gwf.api.workflow.WorkflowConfiguration;
 import gwf.api.workflow.context.WorkflowContext;
 import gwf.wfm.impl.executor.ExecutorConfigImpl;
+import gwf.wfm.impl.workflow.WorkflowConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

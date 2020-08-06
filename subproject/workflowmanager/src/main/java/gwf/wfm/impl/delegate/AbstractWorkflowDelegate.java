@@ -6,9 +6,9 @@ import gwf.api.executor.ExecutorConfig;
 import gwf.api.task.TaskContainer;
 import gwf.api.task.WorkflowTask;
 import gwf.api.util.ClosureUtil;
-import gwf.api.workflow.WorkflowConfiguration;
 import gwf.wfm.impl.task.CdiTaskInstantiator;
 import gwf.wfm.impl.task.DefaultTaskContainer;
+import gwf.wfm.impl.workflow.WorkflowConfiguration;
 import gwf.wfm.impl.workflow.WorkflowConfigurationImpl;
 import gwf.wfm.impl.workflow.WorkflowLocator;
 
@@ -16,6 +16,7 @@ import javax.enterprise.inject.spi.CDI;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase {
 
@@ -28,6 +29,11 @@ public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase {
 	}
 
 	public abstract ExecutorConfig getExecutorConfig();
+
+	@Override
+	public Map<String, String> getEnv() {
+		return config.getEnv();
+	}
 
 	@Override
 	public void tasks(Closure<?> cl) {

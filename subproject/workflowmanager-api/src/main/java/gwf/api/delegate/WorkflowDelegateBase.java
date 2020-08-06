@@ -6,6 +6,8 @@ import gwf.api.executor.ExecutorConfig;
 import gwf.api.task.TaskContainer;
 import org.slf4j.Logger;
 
+import java.util.Map;
+
 /**
  * Base interface implemented by delegates of workflow scripts.
  * Provides utilities for logging, obtaining workflow context and adding tasks.
@@ -16,6 +18,11 @@ public interface WorkflowDelegateBase {
 	 * @return Logger for the current workflow context
 	 */
 	Logger getLogger();
+
+	/**
+	 * @return environment of workflow execution
+	 */
+	Map<String, String> getEnv();
 
 	/**
 	 * @param cl Closure used to configure executors

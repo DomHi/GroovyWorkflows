@@ -3,11 +3,11 @@ package gwf.wfm.impl;
 import gwf.api.WorkflowManager;
 import gwf.api.discovery.ImmutableWorkflowDiscoveryContext;
 import gwf.api.discovery.WorkflowDiscoveryContext;
-import gwf.api.workflow.WorkflowConfiguration;
 import gwf.api.workflow.context.WorkflowContext;
 import gwf.wfm.impl.delegate.AbstractWorkflowDelegate;
 import gwf.wfm.impl.delegate.Delegation;
 import gwf.wfm.impl.executor.ExecutionPhase;
+import gwf.wfm.impl.workflow.WorkflowConfiguration;
 import gwf.wfm.impl.workflow.WorkflowConfigurationImpl;
 import gwf.wfm.impl.workflow.WorkflowLocator;
 

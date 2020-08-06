@@ -2,7 +2,7 @@ package gwf.wfm.impl.delegate;
 
 import groovy.lang.Closure;
 import gwf.api.executor.ExecutorConfig;
-import gwf.api.workflow.WorkflowConfiguration;
+import gwf.wfm.impl.workflow.WorkflowConfiguration;
 import org.slf4j.Logger;
 
 public class InlineWorkflowDelegate extends AbstractWorkflowDelegate {
