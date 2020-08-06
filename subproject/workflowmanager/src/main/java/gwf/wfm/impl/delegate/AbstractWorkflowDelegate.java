@@ -45,7 +45,10 @@ public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase {
 	@Override
 	public void inline(String path) {
 		URI inlineUri = locator().relative(config.getLocation(), path);
-		AbstractWorkflowDelegate delegate = Delegation.inlined(this, new WorkflowConfigurationImpl(inlineUri));
+		AbstractWorkflowDelegate delegate = Delegation.inlined(
+				this,
+				new WorkflowConfigurationImpl(inlineUri, config.getEnv())
+		);
 		taskContainers.add(new DefaultTaskContainer(delegate.getTasks()));
 	}
 
