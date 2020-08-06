@@ -9,6 +9,8 @@ executor {
     properties.TEST = 'Blubb'
 }
 
+env.BLUBB = "abc"
+
 tasks {
 
     task(GenericAction) {
@@ -24,6 +26,7 @@ tasks {
 
         action {
             logger.info "$name second action"
+            env.test = "property added by $name"
         }
 
         logger.info "$name configured"
@@ -71,6 +74,13 @@ tasks {
         }
 
         logger.info "$name configured"
+    }
+
+    task("print env", GenericAction) {
+        logger.info "env (configuration): $env"
+        action {
+            logger.info "env (runtime): $env"
+        }
     }
 }
 

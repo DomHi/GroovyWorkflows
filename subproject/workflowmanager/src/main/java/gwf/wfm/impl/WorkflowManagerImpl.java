@@ -12,6 +12,8 @@ import gwf.wfm.impl.workflow.WorkflowConfigurationImpl;
 import gwf.wfm.impl.workflow.WorkflowLocator;
 
 import javax.inject.Inject;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WorkflowManagerImpl implements WorkflowManager {
 
@@ -21,17 +23,23 @@ public class WorkflowManagerImpl implements WorkflowManager {
 	@Override
 	public void execute(String workflowName) {
 
+		execute(workflowName, new HashMap<>());
+	}
+
+	@Override
+	public void execute(String workflowName, Map<String, String> env) {
+
 		setCtx(workflowName);
 
 		try {
-			executeInternal();
+			executeInternal(new HashMap<>(env));
 		} finally {
 			WorkflowContext.clear();
 		}
 	}
 
-	private void executeInternal() {
-		WorkflowConfiguration wf = getWorkflow();
+	private void executeInternal(Map<String, String> env) {
+		WorkflowConfiguration wf = getWorkflow(env);
 		AbstractWorkflowDelegate delegate = Delegation.initial(wf);
 		ExecutionPhase.run(delegate);
 	}
@@ -45,9 +53,9 @@ public class WorkflowManagerImpl implements WorkflowManager {
 		);
 	}
 
-	private WorkflowConfiguration getWorkflow() {
+	private WorkflowConfiguration getWorkflow(Map<String, String> env) {
 		return locator.discover()
-				.map(WorkflowConfigurationImpl::new)
+				.map(uri -> new WorkflowConfigurationImpl(uri, env))
 				.orElse(null);
 	}
 }
