@@ -1,6 +1,7 @@
 package gwf.wfm.impl.delegate;
 
 import groovy.lang.Closure;
+import gwf.api.WorkflowManagerException;
 import gwf.api.delegate.WorkflowDelegateBase;
 import gwf.api.executor.ExecutorConfig;
 import gwf.api.task.TaskContainer;
@@ -13,7 +14,9 @@ import gwf.wfm.impl.workflow.WorkflowConfigurationImpl;
 import gwf.wfm.impl.workflow.WorkflowLocator;
 
 import javax.enterprise.inject.spi.CDI;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +53,16 @@ public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase {
 				new WorkflowConfigurationImpl(inlineUri, config.getEnv())
 		);
 		taskContainers.add(new DefaultTaskContainer(delegate.getTasks()));
+	}
+
+	@Override
+	public URL url(String uri) {
+		URI resolved = config.getLocation().resolve(uri);
+		try {
+			return resolved.toURL();
+		} catch (MalformedURLException e) {
+			throw new WorkflowManagerException(e);
+		}
 	}
 
 	public List<WorkflowTask> getTasks() {

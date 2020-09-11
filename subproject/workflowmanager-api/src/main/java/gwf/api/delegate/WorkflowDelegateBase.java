@@ -6,6 +6,7 @@ import gwf.api.executor.ExecutorConfig;
 import gwf.api.task.TaskContainer;
 import org.slf4j.Logger;
 
+import java.net.URL;
 import java.util.Map;
 
 /**
@@ -42,4 +43,13 @@ public interface WorkflowDelegateBase {
 	 * @param path of the workflow to inline. Will be resolved relative to current workflows location.
 	 */
 	void inline(String path);
+
+	/**
+	 * Resolves given {@code uri} against this workflows location. For details see {@link java.net.URI#resolve(String)}.
+	 * After resolving the resulting {@link java.net.URI} is converted to {@link java.net.URL}.
+	 *
+	 * @param uri which will be resolved against workflow location
+	 * @return resulting {@link java.net.URL}
+	 */
+	URL url(String uri);
 }

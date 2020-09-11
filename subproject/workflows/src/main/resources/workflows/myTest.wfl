@@ -16,6 +16,14 @@ tasks {
     task(GenericAction) {
         name = "task 1"
         logger.info "$name configured"
+
+        action {
+            url "someFile.txt" withInputStream {
+                it.eachLine {
+                    line -> logger.info line
+                }
+            }
+        }
     }
 
     task("task 2", GenericAction) {
