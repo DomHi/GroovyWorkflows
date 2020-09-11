@@ -10,6 +10,10 @@ public class WorkflowManagerException extends RuntimeException {
 		super(msg);
 	}
 
+	public WorkflowManagerException(Throwable cause) {
+		super(cause);
+	}
+
 	public WorkflowManagerException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
