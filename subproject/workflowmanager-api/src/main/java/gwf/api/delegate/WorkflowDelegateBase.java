@@ -52,4 +52,20 @@ public interface WorkflowDelegateBase {
 	 * @return resulting {@link java.net.URL}
 	 */
 	URL url(String uri);
+
+	/**
+	 * Load file as given {@code type}.
+	 * When type is {@link java.lang.String String} the file will be read as plain text.
+	 * To return a POJO the data must be in json, xml or yaml format (inferred by file extension).
+	 *
+	 * <p>
+	 * For parsing POJOs <a href="https://github.com/FasterXML/jackson">Jackson</a> is used.
+	 * So the given {@code type} should be compatible.
+	 * </p>
+	 *
+	 * @param type of the returned object
+	 * @param file to read (see {@link #url(String)})
+	 * @return object created by loading given file
+	 */
+	<T> T load(Class<T> type, String file);
 }

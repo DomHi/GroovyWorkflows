@@ -7,6 +7,7 @@ import gwf.api.executor.ExecutorConfig;
 import gwf.api.task.TaskContainer;
 import gwf.api.task.WorkflowTask;
 import gwf.api.util.ClosureUtil;
+import gwf.wfm.impl.file.loader.FileLoader;
 import gwf.wfm.impl.phase.ConfigurationPhase;
 import gwf.wfm.impl.task.CdiTaskInstantiator;
 import gwf.wfm.impl.task.DefaultTaskContainer;
@@ -68,6 +69,12 @@ public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase {
 		}
 	}
 
+	@Override
+	public <T> T load(Class<T> type, String file) {
+		FileLoader<T> loader = FileLoader.of(extension(file), type);
+		return loader.load(url(file));
+	}
+
 	public List<WorkflowTask> getTasks() {
 		List<WorkflowTask> tasks = new ArrayList<>();
 		taskContainers.forEach(
@@ -78,5 +85,10 @@ public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase {
 
 	protected WorkflowLocator locator() {
 		return CDI.current().select(WorkflowLocator.class).get();
+	}
+
+	private String extension(String file) {
+		String[] parts = file.split("\\.");
+		return parts[parts.length - 1];
 	}
 }

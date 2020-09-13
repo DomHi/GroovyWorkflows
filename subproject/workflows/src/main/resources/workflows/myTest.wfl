@@ -2,6 +2,9 @@ package workflows
 
 import gwf.util.task.GenericAction
 import gwf.util.task.sql.ExecuteSql
+import gwf.workflows.data.JsonData
+import gwf.workflows.data.XmlData
+import gwf.workflows.data.YamlData
 
 logger.info 'Workflow found in workflows'
 
@@ -23,6 +26,22 @@ tasks {
                     line -> logger.info line
                 }
             }
+        }
+
+        action {
+            logger.info load(String, "data/data.txt")
+        }
+
+        action {
+            logger.info load(JsonData, "data/data.json").toString()
+        }
+
+        action {
+            logger.info load(XmlData, "data/data.xml").toString()
+        }
+
+        action {
+            logger.info load(YamlData, "data/data.yaml").toString()
         }
     }
 
