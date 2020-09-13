@@ -6,6 +6,7 @@ import gwf.api.executor.ExecutorConfig;
 import gwf.api.util.ClosureUtil;
 import gwf.api.workflow.context.WorkflowContext;
 import gwf.wfm.impl.executor.ExecutorConfigImpl;
+import gwf.wfm.impl.phase.ConfigurationPhase;
 import gwf.wfm.impl.workflow.WorkflowConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,9 @@ public class WorkflowDelegateImpl extends AbstractWorkflowDelegate {
 
 	@Override
 	public void executor(Closure<?> cl) {
-		ClosureUtil.delegateFirst(cl, executorConfig).call();
+		ConfigurationPhase.executeExclusive("executor",
+				() -> ClosureUtil.delegateFirst(cl, executorConfig).call()
+		);
 	}
 
 	@Override

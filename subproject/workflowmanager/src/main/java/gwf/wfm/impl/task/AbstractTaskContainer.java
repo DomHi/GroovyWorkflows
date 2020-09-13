@@ -5,6 +5,7 @@ import gwf.api.task.TaskContainer;
 import gwf.api.task.WorkflowTask;
 import gwf.api.task.instance.TaskInstantiator;
 import gwf.api.util.ClosureUtil;
+import gwf.wfm.impl.phase.ConfigurationPhase;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,17 +41,21 @@ public abstract class AbstractTaskContainer implements TaskContainer {
 
 	@Override
 	public <T extends WorkflowTask> void task(Class<T> clazz, Closure<?> cl) {
-		T impl = instantiator.create(clazz);
-		ClosureUtil.delegateFirst(cl, impl).call();
-		tasks.add(impl);
+		ConfigurationPhase.execute("task", () -> {
+			T impl = instantiator.create(clazz);
+			ClosureUtil.delegateFirst(cl, impl).call();
+			tasks.add(impl);
+		});
 	}
 
 	@Override
 	public <T extends WorkflowTask> void task(String name, Class<T> clazz, Closure<?> cl) {
-		T impl = instantiator.create(clazz);
-		impl.setName(name);
-		ClosureUtil.delegateFirst(cl, impl).call();
-		tasks.add(impl);
+		ConfigurationPhase.execute("task", () -> {
+			T impl = instantiator.create(clazz);
+			impl.setName(name);
+			ClosureUtil.delegateFirst(cl, impl).call();
+			tasks.add(impl);
+		});
 	}
 
 	@Override

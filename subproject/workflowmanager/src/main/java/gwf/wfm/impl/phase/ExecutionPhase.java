@@ -1,4 +1,4 @@
-package gwf.wfm.impl.executor;
+package gwf.wfm.impl.phase;
 
 import gwf.api.WorkflowManagerException;
 import gwf.api.executor.ExecutorConfig;

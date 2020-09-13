@@ -1,5 +1,6 @@
 package gwf.wfm.impl.delegate;
 
+import gwf.wfm.impl.phase.ConfigurationPhase;
 import gwf.wfm.impl.workflow.WorkflowConfiguration;
 
 public class Delegation {
@@ -9,7 +10,14 @@ public class Delegation {
 
 	public static AbstractWorkflowDelegate initial(WorkflowConfiguration cfg) {
 		AbstractWorkflowDelegate delegate = new WorkflowDelegateImpl(cfg);
-		cfg.configure(delegate);
+
+		ConfigurationPhase.start();
+		try {
+			cfg.configure(delegate);
+		} finally {
+			ConfigurationPhase.end();
+		}
+
 		return delegate;
 	}
 

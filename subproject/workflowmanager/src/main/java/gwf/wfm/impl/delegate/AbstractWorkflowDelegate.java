@@ -7,6 +7,7 @@ import gwf.api.executor.ExecutorConfig;
 import gwf.api.task.TaskContainer;
 import gwf.api.task.WorkflowTask;
 import gwf.api.util.ClosureUtil;
+import gwf.wfm.impl.phase.ConfigurationPhase;
 import gwf.wfm.impl.task.CdiTaskInstantiator;
 import gwf.wfm.impl.task.DefaultTaskContainer;
 import gwf.wfm.impl.workflow.WorkflowConfiguration;
@@ -40,9 +41,11 @@ public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase {
 
 	@Override
 	public void tasks(Closure<?> cl) {
-		TaskContainer newTasks = new DefaultTaskContainer(new CdiTaskInstantiator());
-		ClosureUtil.delegateFirst(cl, newTasks).call();
-		taskContainers.add(newTasks);
+		ConfigurationPhase.execute("tasks", () -> {
+			TaskContainer newTasks = new DefaultTaskContainer(new CdiTaskInstantiator());
+			ClosureUtil.delegateFirst(cl, newTasks).call();
+			taskContainers.add(newTasks);
+		});
 	}
 
 	@Override
