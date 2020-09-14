@@ -75,6 +75,11 @@ public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase {
 		return loader.load(url(file));
 	}
 
+	@Override
+	public <T> T cdi(Class<T> type) {
+		return CDI.current().select(type).get();
+	}
+
 	public List<WorkflowTask> getTasks() {
 		List<WorkflowTask> tasks = new ArrayList<>();
 		taskContainers.forEach(

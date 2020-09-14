@@ -68,4 +68,12 @@ public interface WorkflowDelegateBase {
 	 * @return object created by loading given file
 	 */
 	<T> T load(Class<T> type, String file);
+
+	/**
+	 * Use {@link javax.enterprise.inject.spi.CDI CDI} to look up a bean instance.
+	 *
+	 * @param type of bean
+	 * @return bean instance
+	 */
+	<T> T cdi(Class<T> type);
 }

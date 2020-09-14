@@ -6,6 +6,7 @@ import gwf.workflows.data.JaxbXmlData
 import gwf.workflows.data.JsonData
 import gwf.workflows.data.XmlData
 import gwf.workflows.data.YamlData
+import gwf.workflows.sample.bean.SampleLocal
 
 logger.info 'Workflow found in workflows'
 
@@ -108,10 +109,16 @@ tasks {
         logger.info "$name configured"
     }
 
+    def bean = cdi SampleLocal
+
     task("print env", GenericAction) {
         logger.info "env (configuration): $env"
         action {
             logger.info "env (runtime): $env"
+        }
+
+        action {
+            logger.info bean.sayHello()
         }
     }
 }
