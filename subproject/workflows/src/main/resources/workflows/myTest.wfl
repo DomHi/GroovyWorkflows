@@ -2,6 +2,7 @@ package workflows
 
 import gwf.util.task.GenericAction
 import gwf.util.task.sql.ExecuteSql
+import gwf.workflows.data.JaxbXmlData
 import gwf.workflows.data.JsonData
 import gwf.workflows.data.XmlData
 import gwf.workflows.data.YamlData
@@ -38,6 +39,10 @@ tasks {
 
         action {
             logger.info load(XmlData, "data/data.xml").toString()
+        }
+
+        action {
+            logger.info load(JaxbXmlData, "data/data.jaxb.xml").toString()
         }
 
         action {
