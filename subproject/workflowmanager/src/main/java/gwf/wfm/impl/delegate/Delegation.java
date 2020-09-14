@@ -22,7 +22,7 @@ public class Delegation {
 	}
 
 	public static AbstractWorkflowDelegate inlined(AbstractWorkflowDelegate parent, WorkflowConfiguration cfg) {
-		AbstractWorkflowDelegate delegate = new InlineWorkflowDelegate(parent.getLogger(), cfg);
+		AbstractWorkflowDelegate delegate = new InlineWorkflowDelegate(parent.getLogger(), parent.getExecutorConfig(), cfg);
 		cfg.configure(delegate);
 		return delegate;
 	}

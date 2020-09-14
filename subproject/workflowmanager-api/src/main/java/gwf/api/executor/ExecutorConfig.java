@@ -5,16 +5,16 @@ import java.util.Map;
 public interface ExecutorConfig {
 
 	/**
-	 * @return currently configured executor class
+	 * @return currently configured executor
 	 */
-	Class<? extends  WorkflowExecutor> getExecutorClass();
+	TaskExecutor getExecutor();
 
 	/**
-	 * Provide executor class which should be used to execute tasks
+	 * Provide executor which should be used to execute tasks
 	 *
-	 * @param impl executor class
+	 * @param executor implementation
 	 */
-	<T extends  WorkflowExecutor> void setExecutorClass(Class<T> impl);
+	void setExecutor(TaskExecutor executor);
 
 	/**
 	 * @return properties configured for this configuration

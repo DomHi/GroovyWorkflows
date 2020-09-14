@@ -9,9 +9,12 @@ public class InlineWorkflowDelegate extends AbstractWorkflowDelegate {
 
 	private final Logger logger;
 
-	protected InlineWorkflowDelegate(Logger logger, WorkflowConfiguration cfg) {
+	private final ExecutorConfig executorConfig;
+
+	protected InlineWorkflowDelegate(Logger logger, ExecutorConfig config, WorkflowConfiguration cfg) {
 		super(cfg);
 		this.logger = logger;
+		this.executorConfig = config;
 	}
 
 	@Override
@@ -26,6 +29,6 @@ public class InlineWorkflowDelegate extends AbstractWorkflowDelegate {
 
 	@Override
 	public ExecutorConfig getExecutorConfig() {
-		return null;
+		return executorConfig;
 	}
 }

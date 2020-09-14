@@ -4,13 +4,14 @@ import groovy.lang.Closure;
 import gwf.api.WorkflowManagerException;
 import gwf.api.delegate.WorkflowDelegateBase;
 import gwf.api.executor.ExecutorConfig;
-import gwf.api.task.TaskContainer;
-import gwf.api.task.WorkflowTask;
+import gwf.api.executor.TaskExecutor;
 import gwf.api.util.ClosureUtil;
 import gwf.wfm.impl.file.loader.FileLoader;
 import gwf.wfm.impl.phase.ConfigurationPhase;
+import gwf.wfm.impl.task.AbstractTaskContainer;
 import gwf.wfm.impl.task.CdiTaskInstantiator;
 import gwf.wfm.impl.task.DefaultTaskContainer;
+import gwf.wfm.impl.task.ExecutableTasks;
 import gwf.wfm.impl.workflow.WorkflowConfiguration;
 import gwf.wfm.impl.workflow.WorkflowConfigurationImpl;
 import gwf.wfm.impl.workflow.WorkflowLocator;
@@ -20,14 +21,15 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase {
+public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase, ExecutableTasks {
 
 	protected final WorkflowConfiguration config;
 
-	protected final List<TaskContainer> taskContainers = new ArrayList<>();
+	protected final List<ExecutableTasks> executables = new ArrayList<>();
 
 	protected AbstractWorkflowDelegate(WorkflowConfiguration config) {
 		this.config = config;
@@ -43,9 +45,9 @@ public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase {
 	@Override
 	public void tasks(Closure<?> cl) {
 		ConfigurationPhase.execute("tasks", () -> {
-			TaskContainer newTasks = new DefaultTaskContainer(new CdiTaskInstantiator());
+			AbstractTaskContainer newTasks = new DefaultTaskContainer(new CdiTaskInstantiator());
 			ClosureUtil.delegateFirst(cl, newTasks).call();
-			taskContainers.add(newTasks);
+			executables.add(newTasks);
 		});
 	}
 
@@ -56,7 +58,7 @@ public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase {
 				this,
 				new WorkflowConfigurationImpl(inlineUri, config.getEnv())
 		);
-		taskContainers.add(new DefaultTaskContainer(delegate.getTasks()));
+		executables.add(delegate);
 	}
 
 	@Override
@@ -80,12 +82,18 @@ public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase {
 		return CDI.current().select(type).get();
 	}
 
-	public List<WorkflowTask> getTasks() {
-		List<WorkflowTask> tasks = new ArrayList<>();
-		taskContainers.forEach(
-				cfg -> tasks.addAll(cfg.getTasks())
+	@Override
+	public void run(TaskExecutor defaultExecutor, Map<String, Object> properties) {
+		TaskExecutor configured = getExecutorConfig().getExecutor();
+
+		TaskExecutor exe = configured != null ? configured : defaultExecutor;
+
+		Map<String, Object> merged = new HashMap<>();
+		merged.putAll(properties);
+		merged.putAll(getExecutorConfig().getProperties());
+		executables.forEach(
+				e -> e.run(exe, merged)
 		);
-		return tasks;
 	}
 
 	protected WorkflowLocator locator() {

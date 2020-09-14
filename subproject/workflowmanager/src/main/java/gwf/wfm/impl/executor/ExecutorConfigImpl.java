@@ -1,25 +1,25 @@
 package gwf.wfm.impl.executor;
 
 import gwf.api.executor.ExecutorConfig;
-import gwf.api.executor.WorkflowExecutor;
+import gwf.api.executor.TaskExecutor;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ExecutorConfigImpl implements ExecutorConfig {
 
-	private Class<? extends WorkflowExecutor> executorClass = WorkflowExecutorImpl.class;
+	private TaskExecutor executor = null;
 
 	private final Map<String, Object> properties = new HashMap<>();
 
 	@Override
-	public Class<? extends WorkflowExecutor> getExecutorClass() {
-		return executorClass;
+	public TaskExecutor getExecutor() {
+		return executor;
 	}
 
 	@Override
-	public <T extends WorkflowExecutor> void setExecutorClass(Class<T> executorClass) {
-		this.executorClass = executorClass;
+	public void setExecutor(TaskExecutor executor) {
+		this.executor = executor;
 	}
 
 	@Override

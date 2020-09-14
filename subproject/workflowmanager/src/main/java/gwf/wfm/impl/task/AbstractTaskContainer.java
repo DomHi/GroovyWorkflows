@@ -1,42 +1,38 @@
 package gwf.wfm.impl.task;
 
 import groovy.lang.Closure;
+import gwf.api.executor.TaskExecutor;
 import gwf.api.task.TaskContainer;
 import gwf.api.task.WorkflowTask;
 import gwf.api.task.instance.TaskInstantiator;
 import gwf.api.util.ClosureUtil;
+import gwf.wfm.impl.executor.provider.TaskProviderImpl;
 import gwf.wfm.impl.phase.ConfigurationPhase;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
-public abstract class AbstractTaskContainer implements TaskContainer {
+public abstract class AbstractTaskContainer implements TaskContainer, ExecutableTasks {
 
 	private TaskInstantiator instantiator;
 
-	private final List<WorkflowTask> tasks = new ArrayList<>();
+	private TaskExecutor executor = null;
 
-	protected AbstractTaskContainer() {
-		this.instantiator = new CdiTaskInstantiator();
-	}
+	private final List<WorkflowTask> tasks = new ArrayList<>();
 
 	protected AbstractTaskContainer(TaskInstantiator instantiator) {
 		this.instantiator = instantiator;
 	}
 
-	protected AbstractTaskContainer(Collection<WorkflowTask> tasks) {
-		this.tasks.addAll(tasks);
-	}
-
 	@Override
-	public void setTaskInstantiator(TaskInstantiator instantiator) {
+	public void setInstantiator(TaskInstantiator instantiator) {
 		this.instantiator = instantiator;
 	}
 
 	@Override
-	public TaskInstantiator getTaskInstantiator() {
-		return instantiator;
+	public void setExecutor(TaskExecutor executor) {
+		this.executor = executor;
 	}
 
 	@Override
@@ -59,7 +55,8 @@ public abstract class AbstractTaskContainer implements TaskContainer {
 	}
 
 	@Override
-	public List<WorkflowTask> getTasks() {
-		return tasks;
+	public void run(TaskExecutor defaultExecutor, Map<String, Object> properties) {
+		TaskExecutor exe = executor != null ? executor : defaultExecutor;
+		exe.execute(new TaskProviderImpl(tasks), properties);
 	}
 }

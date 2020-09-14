@@ -4,7 +4,7 @@ import gwf.api.executor.provider.TaskProvider;
 
 import java.util.Map;
 
-public interface WorkflowExecutor {
+public interface TaskExecutor {
 
 	void execute(TaskProvider taskProvider, Map<String, Object> properties);
 }

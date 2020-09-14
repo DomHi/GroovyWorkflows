@@ -2,9 +2,8 @@ package gwf.api.task;
 
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
+import gwf.api.executor.TaskExecutor;
 import gwf.api.task.instance.TaskInstantiator;
-
-import java.util.List;
 
 public interface TaskContainer {
 
@@ -13,12 +12,14 @@ public interface TaskContainer {
 	 *
 	 * @param instantiator to use when creating task instances
 	 */
-	void setTaskInstantiator(TaskInstantiator instantiator);
+	void setInstantiator(TaskInstantiator instantiator);
 
 	/**
-	 * @return {@code TaskInstantiator} used to create task instances
+	 * Set {@code TaskExecutor} used by this TaskConfig instance.
+	 *
+	 * @param executor which will be used to execute tasks
 	 */
-	TaskInstantiator getTaskInstantiator();
+	void setExecutor(TaskExecutor executor);
 
 	/**
 	 * Add a {@code WorkflowTask} of given type and configure it using the given {@code Closure}.
@@ -43,6 +44,4 @@ public interface TaskContainer {
 			@DelegatesTo.Target Class<T> clazz,
 			@DelegatesTo(strategy = Closure.DELEGATE_FIRST, genericTypeIndex = 0) Closure<?> cl
 	);
-
-	List<WorkflowTask> getTasks();
 }
