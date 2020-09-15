@@ -49,9 +49,8 @@ public class ExecuteSql extends AbstractWorkflowTask {
 			throw new WorkflowManagerException("Jdbi already configured");
 		}
 
-		Jdbi delegate = Jdbi.create(ds);
-		ClosureUtil.delegateFirst(cl, delegate).call();
-		jdbi = delegate;
+		jdbi = Jdbi.create(ds);
+		ClosureUtil.delegateFirst(cl, jdbi).call();
 	}
 
 	public void sql(@DelegatesTo(SimpleStatement.class) Closure<?> cl) {
