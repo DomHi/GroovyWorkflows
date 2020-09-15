@@ -7,6 +7,8 @@ import gwf.workflows.data.JsonData
 import gwf.workflows.data.XmlData
 import gwf.workflows.data.YamlData
 import gwf.workflows.sample.bean.SampleLocal
+import org.jdbi.v3.core.statement.SqlLogger
+import org.jdbi.v3.core.statement.StatementContext
 
 logger.info 'Workflow found in workflows'
 
@@ -70,6 +72,15 @@ inline "sub/inlineWorkflow.wfl"
 
 tasks {
     task("sql task", ExecuteSql) {
+
+        jdbi {
+            setSqlLogger(new SqlLogger() {
+                @Override
+                void logAfterExecution(StatementContext context) {
+                    logger.info "Custom jdbi execute: ${context.renderedSql}"
+                }
+            })
+        }
 
         sql {
             /
