@@ -27,9 +27,9 @@ public interface TaskContainer {
 	 * @param clazz type of task
 	 * @param cl    {@code Closure} used to configure the task
 	 */
-	<T extends WorkflowTask> void task(
-			@DelegatesTo.Target Class<T> clazz,
-			@DelegatesTo(strategy = Closure.DELEGATE_FIRST, genericTypeIndex = 0) Closure<?> cl
+	<T, U extends WorkflowTask<T>> void task(
+			Class<U> clazz,
+			@DelegatesTo(strategy = Closure.DELEGATE_FIRST, type = "T") Closure<?> cl
 	);
 
 	/**
@@ -39,9 +39,9 @@ public interface TaskContainer {
 	 * @param clazz type of task
 	 * @param cl    {@code Closure} used to configure the task
 	 */
-	<T extends WorkflowTask> void task(
+	<T, U extends WorkflowTask<T>> void task(
 			String name,
-			@DelegatesTo.Target Class<T> clazz,
-			@DelegatesTo(strategy = Closure.DELEGATE_FIRST, genericTypeIndex = 0) Closure<?> cl
+			Class<U> clazz,
+			@DelegatesTo(strategy = Closure.DELEGATE_FIRST, type = "T") Closure<?> cl
 	);
 }

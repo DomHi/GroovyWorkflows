@@ -8,9 +8,9 @@ import java.util.List;
 
 public class TaskProviderImpl implements TaskProvider {
 
-	private final List<WorkflowTask> tasks;
+	private final List<WorkflowTask<?>> tasks;
 
-	public TaskProviderImpl(List<WorkflowTask> tasks) {
+	public TaskProviderImpl(List<WorkflowTask<?>> tasks) {
 		this.tasks = tasks;
 	}
 
@@ -20,7 +20,7 @@ public class TaskProviderImpl implements TaskProvider {
 	}
 
 	@Override
-	public Iterator<WorkflowTask> iterator() {
+	public Iterator<WorkflowTask<?>> iterator() {
 		return tasks.iterator();
 	}
 }

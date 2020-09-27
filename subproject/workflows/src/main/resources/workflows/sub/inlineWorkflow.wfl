@@ -1,6 +1,6 @@
 package workflows.sub
 
-import gwf.util.task.GenericAction
+import gwf.util.task.generic.GenericAction
 
 tasks {
 

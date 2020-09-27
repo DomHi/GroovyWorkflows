@@ -19,7 +19,7 @@ public abstract class AbstractTaskContainer implements TaskContainer, Executable
 
 	private TaskExecutor executor = null;
 
-	private final List<WorkflowTask> tasks = new ArrayList<>();
+	private final List<WorkflowTask<?>> tasks = new ArrayList<>();
 
 	protected AbstractTaskContainer(TaskInstantiator instantiator) {
 		this.instantiator = instantiator;
@@ -36,20 +36,25 @@ public abstract class AbstractTaskContainer implements TaskContainer, Executable
 	}
 
 	@Override
-	public <T extends WorkflowTask> void task(Class<T> clazz, Closure<?> cl) {
+	public <T, U extends WorkflowTask<T>> void task(Class<U> clazz, Closure<?> cl) {
 		ConfigurationPhase.execute("task", () -> {
-			T impl = instantiator.create(clazz);
-			ClosureUtil.delegateFirst(cl, impl).call();
-			tasks.add(impl);
+			U taskImpl = instantiator.create(clazz);
+			// TODO set generated name in taskImpl
+			taskImpl.configure(
+					cfg -> ClosureUtil.delegateFirst(cl, cfg).call()
+			);
+			tasks.add(taskImpl);
 		});
 	}
 
 	@Override
-	public <T extends WorkflowTask> void task(String name, Class<T> clazz, Closure<?> cl) {
+	public <T, U extends WorkflowTask<T>> void task(String name, Class<U> clazz, Closure<?> cl) {
 		ConfigurationPhase.execute("task", () -> {
-			T impl = instantiator.create(clazz);
+			U impl = instantiator.create(clazz);
 			impl.setName(name);
-			ClosureUtil.delegateFirst(cl, impl).call();
+			impl.configure(
+					cfg -> ClosureUtil.delegateFirst(cl, cfg).call()
+			);
 			tasks.add(impl);
 		});
 	}

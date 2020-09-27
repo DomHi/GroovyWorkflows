@@ -10,15 +10,18 @@ import java.net.URI;
 
 public class ScriptLoader {
 
-    public static WorkflowScript load(URI location) {
-        CompilerConfiguration cc = new CompilerConfiguration();
-        cc.setScriptBaseClass(WorkflowScript.class.getName());
+	private ScriptLoader() {
+	}
 
-        GroovyShell shell = new GroovyShell(new Binding(), cc);
-        try {
-            return (WorkflowScript) shell.parse(location);
-        } catch (IOException e) {
-            throw new WorkflowManagerException("Failed to parse script.", e);
-        }
-    }
+	public static WorkflowScript load(URI location) {
+		CompilerConfiguration cc = new CompilerConfiguration();
+		cc.setScriptBaseClass(WorkflowScript.class.getName());
+
+		GroovyShell shell = new GroovyShell(new Binding(), cc);
+		try {
+			return (WorkflowScript) shell.parse(location);
+		} catch (IOException e) {
+			throw new WorkflowManagerException("Failed to parse script.", e);
+		}
+	}
 }

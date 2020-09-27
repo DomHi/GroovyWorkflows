@@ -1,6 +1,6 @@
 package workflows
 
-import gwf.util.task.GenericAction
+import gwf.util.task.generic.GenericAction
 import gwf.util.task.sql.ExecuteSql
 import gwf.workflows.data.JaxbXmlData
 import gwf.workflows.data.JsonData
@@ -21,7 +21,6 @@ env.BLUBB = "abc"
 tasks {
 
     task(GenericAction) {
-        name = "task 1"
         logger.info "$name configured"
 
         action {

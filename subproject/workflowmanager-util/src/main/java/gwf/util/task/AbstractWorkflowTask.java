@@ -2,7 +2,7 @@ package gwf.util.task;
 
 import gwf.api.task.WorkflowTask;
 
-public abstract class AbstractWorkflowTask implements WorkflowTask {
+public abstract class AbstractWorkflowTask<C> implements WorkflowTask<C> {
 
 	private String name;
 
