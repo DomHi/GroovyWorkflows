@@ -2,6 +2,8 @@ package gwf.api.delegate;
 
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
+import groovy.transform.stc.ClosureParams;
+import groovy.transform.stc.SimpleType;
 import gwf.api.executor.ExecutorConfig;
 import gwf.api.task.TaskContainer;
 import org.slf4j.Logger;
@@ -19,6 +21,8 @@ public interface WorkflowDelegateBase {
 	 * @return Logger for the current workflow context
 	 */
 	Logger getLogger();
+
+	void wrapExecution(@ClosureParams(value = SimpleType.class, options = "gwf.api.workflow.execution.WorkflowExecution") Closure<?> cl);
 
 	/**
 	 * @return environment of workflow execution

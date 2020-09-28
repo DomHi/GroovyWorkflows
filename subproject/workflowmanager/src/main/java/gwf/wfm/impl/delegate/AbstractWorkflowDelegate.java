@@ -6,6 +6,7 @@ import gwf.api.delegate.WorkflowDelegateBase;
 import gwf.api.executor.ExecutorConfig;
 import gwf.api.executor.TaskExecutor;
 import gwf.api.util.ClosureUtil;
+import gwf.api.workflow.execution.WorkflowExecution;
 import gwf.wfm.impl.file.loader.FileLoader;
 import gwf.wfm.impl.phase.ConfigurationPhase;
 import gwf.wfm.impl.task.AbstractTaskContainer;
@@ -27,6 +28,8 @@ import java.util.Map;
 
 public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase, ExecutableTasks {
 
+	private Closure<?> executionWrapper = null;
+
 	protected final WorkflowConfiguration config;
 
 	protected final List<ExecutableTasks> executables = new ArrayList<>();
@@ -40,6 +43,14 @@ public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase, 
 	@Override
 	public Map<String, String> getEnv() {
 		return config.getEnv();
+	}
+
+	@Override
+	public void wrapExecution(Closure<?> cl) {
+		if (executionWrapper != null) {
+			throw new WorkflowManagerException("Multiple execution wrappers not supported.");
+		}
+		executionWrapper = cl;
 	}
 
 	@Override
@@ -84,6 +95,16 @@ public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase, 
 
 	@Override
 	public void run(TaskExecutor defaultExecutor, Map<String, Object> properties) {
+		if (executionWrapper != null) {
+			executionWrapper.call(
+					(WorkflowExecution) () -> runInternal(defaultExecutor, properties)
+			);
+		} else {
+			runInternal(defaultExecutor, properties);
+		}
+	}
+
+	private void runInternal(TaskExecutor defaultExecutor, Map<String, Object> properties) {
 		TaskExecutor configured = getExecutorConfig().getExecutor();
 
 		TaskExecutor exe = configured != null ? configured : defaultExecutor;
