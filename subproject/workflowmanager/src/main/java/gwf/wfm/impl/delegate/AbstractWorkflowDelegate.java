@@ -47,10 +47,12 @@ public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase, 
 
 	@Override
 	public void wrapExecution(Closure<?> cl) {
-		if (executionWrapper != null) {
-			throw new WorkflowManagerException("Multiple execution wrappers not supported.");
-		}
-		executionWrapper = cl;
+		ConfigurationPhase.executeExclusive("wrapExecution", () -> {
+			if (executionWrapper != null) {
+				throw new WorkflowManagerException("Multiple execution wrappers not supported.");
+			}
+			executionWrapper = cl;
+		});
 	}
 
 	@Override
