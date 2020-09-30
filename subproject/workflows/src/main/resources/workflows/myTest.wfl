@@ -12,6 +12,12 @@ import org.jdbi.v3.core.statement.StatementContext
 
 logger.info 'Workflow found in workflows'
 
+wrapExecution {
+    logger.info "wrapper start"
+    it.proceed()
+    logger.info "wrapper stop"
+}
+
 executor {
     properties.TEST = 'Blubb'
 }
@@ -31,24 +37,17 @@ tasks {
             }
         }
 
-        action {
-            logger.info load(String, "data/data.txt")
-        }
+        Map<Class<?>, String> loadFiles = [:]
+        loadFiles.put(String, "data/data.txt")
+        loadFiles.put(JsonData, "data/data.json")
+        loadFiles.put(XmlData, "data/data.xml")
+        loadFiles.put(JaxbXmlData, "data/data.jaxb.xml")
+        loadFiles.put(YamlData, "data/data.yaml")
 
-        action {
-            logger.info load(JsonData, "data/data.json").toString()
-        }
-
-        action {
-            logger.info load(XmlData, "data/data.xml").toString()
-        }
-
-        action {
-            logger.info load(JaxbXmlData, "data/data.jaxb.xml").toString()
-        }
-
-        action {
-            logger.info load(YamlData, "data/data.yaml").toString()
+        loadFiles.each { file ->
+            action {
+                logger.info load(file.key, file.value).toString()
+            }
         }
     }
 

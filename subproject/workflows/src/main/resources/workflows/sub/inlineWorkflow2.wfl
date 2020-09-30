@@ -3,14 +3,14 @@ package workflows.sub
 import gwf.util.task.generic.GenericAction
 
 wrapExecution {
-    logger.info "inlineWorkflow start"
+    logger.info "inlineWorkflow2 start"
     it.proceed()
-    logger.info "inlineWorkflow stop"
+    logger.info "inlineWorkflow2 stop"
 }
 
 tasks {
 
-    task("inlineWorkflow task 1", GenericAction) {
+    task("inlineWorkflow2 task", GenericAction) {
 
         action {
             logger.info "$name executed action 1"
@@ -19,5 +19,3 @@ tasks {
         logger.info "$name configured"
     }
 }
-
-inline "inlineWorkflow2.wfl"

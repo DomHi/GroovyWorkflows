@@ -73,6 +73,17 @@ public class ConfigurationPhase {
 		}
 	}
 
+	public static void inline(Runnable action) {
+		ConfigurationPhase previous = get();
+
+		// set new phase for inline workflow
+		activePhase.set(new ConfigurationPhase());
+		action.run();
+
+		// restore previous phase
+		activePhase.set(previous);
+	}
+
 	private static ConfigurationPhase get() {
 		ConfigurationPhase phase = activePhase.get();
 		if (phase == null) {
