@@ -7,6 +7,7 @@ import gwf.api.WorkflowManagerException;
 import gwf.api.util.ClosureUtil;
 import gwf.api.workflow.context.WorkflowContext;
 import gwf.util.task.context.DefaultDatabaseConfig;
+import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
 
 import javax.sql.DataSource;
@@ -17,7 +18,7 @@ public class SqlConfigImpl implements SqlConfig {
 
 	private final String taskName;
 
-	private final List<Statement> statements = new ArrayList<>();
+	private final List<HandleConsumer> consumers = new ArrayList<>();
 
 	private Jdbi jdbi = null;
 
@@ -29,8 +30,8 @@ public class SqlConfigImpl implements SqlConfig {
 		return jdbi;
 	}
 
-	protected List<Statement> getStatements() {
-		return statements;
+	protected List<HandleConsumer> getConsumers() {
+		return consumers;
 	}
 
 	protected void validate() {
@@ -64,7 +65,7 @@ public class SqlConfigImpl implements SqlConfig {
 		if (ret instanceof String || ret instanceof GString) {
 			stmt.setStatement(ret.toString());
 		}
-		statements.add(stmt);
+		consumers.add(stmt);
 	}
 
 	@Override
@@ -79,6 +80,16 @@ public class SqlConfigImpl implements SqlConfig {
 	                                @DelegatesTo(strategy = Closure.DELEGATE_FIRST, type = "gwf.util.task.sql.Select<T>") Closure<?> cl) {
 		Select<T> s = new Select<>(clazz, true);
 		return internalSelect(s, cl);
+	}
+
+	@Override
+	public void handle(Closure<?> cl) {
+		consumers.add(new HandleConsumer() {
+			@Override
+			protected void apply(Handle handle) {
+				cl.call(handle);
+			}
+		});
 	}
 
 	private DataSource defaultDataSource() {
@@ -99,7 +110,7 @@ public class SqlConfigImpl implements SqlConfig {
 		if (ret instanceof String || ret instanceof GString) {
 			select.setStatement(ret.toString());
 		}
-		statements.add(select);
+		consumers.add(select);
 		return select;
 	}
 }

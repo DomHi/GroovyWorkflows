@@ -14,7 +14,7 @@ public class SimpleStatement extends AbstractJdbiStatement {
 	}
 
 	@Override
-	protected void execute(Handle handle) {
+	protected void apply(Handle handle) {
 		try (Update u = handle.createUpdate(stmt)) {
 			getDefine().forEach(u::define);
 			getBind().forEach(u::bind);

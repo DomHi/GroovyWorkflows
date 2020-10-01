@@ -98,6 +98,14 @@ tasks {
             /
         }
 
+        handle {
+            def addresses = it.createQuery("select ADDRESS from WF_USERS")
+                    .mapTo(String)
+                    .list()
+
+            logger.info "Addresses: $addresses"
+        }
+
         selectBean(WfUser) {
 
             bind {

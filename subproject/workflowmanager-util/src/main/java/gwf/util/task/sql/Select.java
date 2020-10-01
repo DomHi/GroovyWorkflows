@@ -38,7 +38,7 @@ public class Select<T> extends AbstractJdbiStatement {
 	}
 
 	@Override
-	protected void execute(Handle handle) {
+	protected void apply(Handle handle) {
 
 		if (thenCl == null) {
 			throw new WorkflowManagerException("THEN closure is missing.");

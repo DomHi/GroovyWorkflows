@@ -20,8 +20,8 @@ public class ExecuteSql extends AbstractWorkflowTask<SqlConfig> {
 	public TaskExecutionResult execute() {
 
 		config.getJdbi().useHandle(handle ->
-				config.getStatements().forEach(
-						stmt -> stmt.execute(handle)
+				config.getConsumers().forEach(
+						stmt -> stmt.apply(handle)
 				)
 		);
 
