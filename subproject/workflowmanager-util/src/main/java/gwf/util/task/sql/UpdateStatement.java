@@ -3,7 +3,7 @@ package gwf.util.task.sql;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.statement.Update;
 
-public class SimpleStatement extends AbstractJdbiStatement {
+public class UpdateStatement extends AbstractJdbiStatement {
 
 	private String stmt = null;
 

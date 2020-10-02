@@ -80,7 +80,7 @@ tasks {
             })
         }
 
-        sql {
+        update {
             /
                 create table if not exists WF_USERS (
                     NAME varchar(255),
@@ -89,7 +89,7 @@ tasks {
             /
         }
 
-        sql {
+        update {
             /
                 insert into WF_USERS
                     (NAME, ADDRESS)

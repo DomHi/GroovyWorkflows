@@ -16,7 +16,7 @@ public interface SqlConfig {
 
 	void jdbi(DataSource ds, @DelegatesTo(Jdbi.class) Closure<?> cl);
 
-	void sql(@DelegatesTo(SimpleStatement.class) Closure<?> cl);
+	void update(@DelegatesTo(UpdateStatement.class) Closure<?> cl);
 
 	<T> Select<T> select(Class<T> clazz,
 	                     @DelegatesTo(strategy = Closure.DELEGATE_FIRST, type = "gwf.util.task.sql.Select<T>") Closure<?> cl);

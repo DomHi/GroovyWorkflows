@@ -59,8 +59,13 @@ public class SqlConfigImpl implements SqlConfig {
 	}
 
 	@Override
-	public void sql(@DelegatesTo(SimpleStatement.class) Closure<?> cl) {
-		SimpleStatement stmt = new SimpleStatement();
+	public void update(@DelegatesTo(UpdateStatement.class) Closure<?> cl) {
+		UpdateStatement stmt = new UpdateStatement();
+		Object ret = ClosureUtil.delegateFirst(cl, stmt).call();
+		if (ret instanceof String || ret instanceof GString) {
+			stmt.setStatement(ret.toString());
+		}
+		consumers.add(stmt);
 		Object ret = ClosureUtil.delegateFirst(cl, stmt).call();
 		if (ret instanceof String || ret instanceof GString) {
 			stmt.setStatement(ret.toString());
