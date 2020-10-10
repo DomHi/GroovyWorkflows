@@ -1,23 +1,22 @@
 package gwf.util.task.sql;
 
+import gwf.util.task.sql.config.impl.UpdateConfigImpl;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.statement.Update;
 
-public class UpdateStatement extends AbstractJdbiStatement {
+public class UpdateStatement implements HandleConsumer {
 
-	private String stmt = null;
+	private UpdateConfigImpl config = null;
 
-	public void setStatement(String stmt) {
-		if (this.stmt == null) {
-			this.stmt = stmt;
-		}
+	public UpdateStatement(UpdateConfigImpl config) {
+		this.config = config;
 	}
 
 	@Override
-	protected void apply(Handle handle) {
-		try (Update u = handle.createUpdate(stmt)) {
-			getDefine().forEach(u::define);
-			getBind().forEach(u::bind);
+	public void apply(Handle handle) {
+		try (Update u = handle.createUpdate(config.getStatement())) {
+			config.getDefine().forEach(u::define);
+			config.getBind().forEach(u::bind);
 			u.execute();
 		}
 	}

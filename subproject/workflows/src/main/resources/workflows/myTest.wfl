@@ -89,12 +89,24 @@ tasks {
             /
         }
 
-        update {
+        def users = [
+                new WfUser('Hubert', 'Hinterdupfing'),
+                new WfUser('Darth Vader', 'DeathStar'),
+                new WfUser('Picard', 'Enterprise')
+        ]
+
+        insertBatch {
+
+            define {
+                table = 'WF_USERS'
+            }
+
+            bind users
+
             /
-                insert into WF_USERS
+                insert into <table>
                     (NAME, ADDRESS)
-                    values ('Hubert', 'Hinterdupfing'),
-                        ('Darth Vader', 'Deathstar')
+                    values (:name, :address)
             /
         }
 
@@ -143,4 +155,11 @@ tasks {
 class WfUser {
     String name
     String address
+
+    WfUser() {}
+
+    WfUser(name, address) {
+        this.name = name
+        this.address = address
+    }
 }

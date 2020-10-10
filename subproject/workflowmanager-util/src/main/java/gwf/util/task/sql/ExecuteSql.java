@@ -2,6 +2,8 @@ package gwf.util.task.sql;
 
 import gwf.api.task.TaskExecutionResult;
 import gwf.util.task.AbstractWorkflowTask;
+import gwf.util.task.sql.config.SqlConfig;
+import gwf.util.task.sql.config.impl.SqlConfigImpl;
 
 import java.util.function.Consumer;
 

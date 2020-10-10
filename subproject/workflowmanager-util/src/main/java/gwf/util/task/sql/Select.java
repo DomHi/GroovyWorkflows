@@ -1,61 +1,51 @@
 package gwf.util.task.sql;
 
-import groovy.lang.Closure;
-import groovy.transform.stc.ClosureParams;
-import groovy.transform.stc.FromString;
 import gwf.api.WorkflowManagerException;
 import gwf.api.util.ClosureUtil;
+import gwf.util.task.sql.config.impl.BatchConfigImpl;
+import gwf.util.task.sql.config.impl.SelectConfigImpl;
+import gwf.util.task.sql.config.impl.SelectConfigImpl.ThenImpl;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.statement.Query;
 
 import java.util.List;
 
-public class Select<T> extends AbstractJdbiStatement {
+public class Select<T> implements HandleConsumer {
 
-	private final Class<T> clazz;
-	private final boolean isBean;
+	private final SelectConfigImpl<T> config;
 
-	private String statement = null;
-
-	private Closure<?> thenCl = null;
-
-	public Select(Class<T> clazz, boolean isBean) {
-		this.clazz = clazz;
-		this.isBean = isBean;
-	}
-
-	public void setStatement(String stmt) {
-		if (statement == null) {
-			statement = stmt;
-		}
-	}
-
-	public void then(@ClosureParams(value = FromString.class, options = "java.util.List<T>") Closure<?> cl) {
-		if (thenCl != null) {
-			throw new WorkflowManagerException("Multiple THEN closures not supported.");
-		}
-		thenCl = ClosureUtil.delegateFirst(cl);
+	public Select(SelectConfigImpl<T> config) {
+		this.config = config;
 	}
 
 	@Override
-	protected void apply(Handle handle) {
+	public void apply(Handle handle) {
 
-		if (thenCl == null) {
+		ThenImpl<?> then = config.getThen();
+
+		if (then.getThenClosure() == null && then.getBatchClosure() == null) {
 			throw new WorkflowManagerException("THEN closure is missing.");
 		}
 
 		List<T> result;
 
-		try (Query q = handle.createQuery(statement)) {
-			getDefine().forEach(q::define);
-			getBind().forEach(q::bind);
-			if (isBean) {
-				result = q.mapToBean(clazz).list();
+		try (Query q = handle.createQuery(config.getStatement())) {
+			config.getDefine().forEach(q::define);
+			config.getBind().forEach(q::bind);
+			if (config.isBean()) {
+				result = q.mapToBean(config.getClazz()).list();
 			} else {
-				result = q.mapTo(clazz).list();
+				result = q.mapTo(config.getClazz()).list();
 			}
 		}
 
-		thenCl.call(result);
+		if (then.getThenClosure() != null) {
+			then.getThenClosure().call(result);
+		} else {
+			BatchConfigImpl batchConfig = new BatchConfigImpl();
+			ClosureUtil.delegateFirst(then.getBatchClosure(), batchConfig).call(result);
+			BatchStatement stmt = new BatchStatement(batchConfig);
+			stmt.apply(handle);
+		}
 	}
 }
