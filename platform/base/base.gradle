@@ -15,7 +15,7 @@ dependencies {
 
         api 'org.slf4j:slf4j-api:1.7.30'
 
-        api 'org.codehaus.groovy:groovy:3.0.3'
+        api 'org.codehaus.groovy:groovy:3.0.6'
 
         api 'org.immutables:value:2.8.8'
 
