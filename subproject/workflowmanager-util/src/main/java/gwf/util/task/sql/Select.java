@@ -1,5 +1,6 @@
 package gwf.util.task.sql;
 
+import groovy.lang.GString;
 import gwf.api.WorkflowManagerException;
 import gwf.api.util.ClosureUtil;
 import gwf.util.task.sql.config.impl.BatchConfigImpl;
@@ -43,7 +44,10 @@ public class Select<T> implements HandleConsumer {
 			then.getThenClosure().call(result);
 		} else {
 			BatchConfigImpl batchConfig = new BatchConfigImpl();
-			ClosureUtil.delegateFirst(then.getBatchClosure(), batchConfig).call(result);
+			Object ret = ClosureUtil.delegateFirst(then.getBatchClosure(), batchConfig).call(result);
+			if (ret instanceof String || ret instanceof GString) {
+				batchConfig.setStatement(ret.toString());
+			}
 			BatchStatement stmt = new BatchStatement(batchConfig);
 			stmt.apply(handle);
 		}
