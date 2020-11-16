@@ -15,7 +15,7 @@ import gwf.wfm.impl.task.DefaultTaskContainer;
 import gwf.wfm.impl.task.ExecutableTasks;
 import gwf.wfm.impl.workflow.WorkflowConfiguration;
 import gwf.wfm.impl.workflow.WorkflowConfigurationImpl;
-import gwf.wfm.impl.workflow.WorkflowLocator;
+import gwf.wfm.impl.workflow.locator.WorkflowLocator;
 
 import javax.enterprise.inject.spi.CDI;
 import java.net.MalformedURLException;

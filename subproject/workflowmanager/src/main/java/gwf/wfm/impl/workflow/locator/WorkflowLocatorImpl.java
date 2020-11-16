@@ -1,4 +1,4 @@
-package gwf.wfm.impl.workflow;
+package gwf.wfm.impl.workflow.locator;
 
 import gwf.api.discovery.WorkflowDiscovery;
 
@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import java.net.URI;
 import java.util.Optional;
 
-public class WorkflowLocator {
+public class WorkflowLocatorImpl implements WorkflowLocator {
 
 	@Inject
 	private Instance<WorkflowDiscovery> discoveries;
