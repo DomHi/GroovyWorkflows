@@ -1,4 +1,4 @@
-package gwf.wfm.impl.workflow.locator;
+package gwf.api.workflow.locator;
 
 import java.net.URI;
 import java.util.Optional;

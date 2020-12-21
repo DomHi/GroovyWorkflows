@@ -1,6 +1,7 @@
 package gwf.workflows
 
 import groovy.util.logging.Slf4j
+import gwf.api.WorkflowBuilder
 import gwf.api.WorkflowManager
 import gwf.api.workflow.context.WorkflowContext
 import gwf.util.task.context.DefaultDatabaseConfig
@@ -14,21 +15,18 @@ import javax.sql.DataSource
 @Stateless
 class StartWorkflow {
 
-    @Inject
-    private WorkflowManager workflowManager
-
     void start(String workflow) {
         log.info "Start workflow $workflow"
         try {
-            addDbContext()
-            workflowManager.execute(workflow)
+            WorkflowBuilder.create()
+                .context(new DefaultDatabaseConfig(ds()))
+                .locator(new WorkflowsLocatorImpl())
+                .workflowName(workflow)
+                .build()
+                .execute()
         } catch (Exception e) {
             log.error("Exception while doing something.", e)
         }
-    }
-
-    private void addDbContext() {
-        WorkflowContext.add(new DefaultDatabaseConfig(ds()))
     }
 
     private DataSource ds() {

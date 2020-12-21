@@ -9,9 +9,8 @@ import gwf.wfm.impl.delegate.Delegation;
 import gwf.wfm.impl.phase.ExecutionPhase;
 import gwf.wfm.impl.workflow.WorkflowConfiguration;
 import gwf.wfm.impl.workflow.WorkflowConfigurationImpl;
-import gwf.wfm.impl.workflow.locator.WorkflowLocator;
+import gwf.api.workflow.locator.WorkflowLocator;
 
-import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +18,6 @@ public class WorkflowManagerImpl implements WorkflowManager {
 
 	private final WorkflowLocator locator;
 
-	@Inject
 	WorkflowManagerImpl(WorkflowLocator locator) {
 		this.locator = locator;
 	}
@@ -53,6 +51,11 @@ public class WorkflowManagerImpl implements WorkflowManager {
 				ImmutableWorkflowDiscoveryContext.builder()
 						.name(wfName)
 						.build()
+		);
+
+		WorkflowContext.add(
+				WorkflowLocator.class,
+				locator
 		);
 	}
 

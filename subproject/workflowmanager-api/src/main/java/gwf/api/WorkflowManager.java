@@ -1,7 +1,5 @@
 package gwf.api;
 
-import javax.enterprise.inject.Instance;
-import javax.enterprise.inject.spi.CDI;
 import java.util.Map;
 
 /**
@@ -25,17 +23,7 @@ public interface WorkflowManager {
 	 */
 	void execute(String workflowName, Map<String, String> env);
 
-	static WorkflowManager getInstance() {
-		try {
-			Instance<WorkflowManager> instance = CDI.current().select(WorkflowManager.class);
-			if (instance.isUnsatisfied()) {
-				throw new WorkflowManagerException("No injectable instance of WorkflowManager found.");
-			}
-			return instance.get();
-		} catch (WorkflowManagerException e) {
-			throw e;
-		} catch (RuntimeException e) {
-			throw new WorkflowManagerException("Failed to obtain instance of WorkflowManager.", e);
-		}
+	static WorkflowBuilder builder() {
+		return new WorkflowBuilder();
 	}
 }
