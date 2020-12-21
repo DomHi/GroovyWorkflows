@@ -6,7 +6,6 @@ dependencies {
     api platform(project(':platform:base'))
     annotationProcessor platform(project(':platform:base'))
 
-    compileOnly 'javax:javaee-api'
     compileOnly 'org.slf4j:slf4j-api'
 
     api 'org.codehaus.groovy:groovy'

@@ -22,7 +22,7 @@ public interface WorkflowDelegateBase {
 	 */
 	Logger getLogger();
 
-	void wrapExecution(@ClosureParams(value = SimpleType.class, options = "gwf.api.workflow.execution.WorkflowExecution") Closure<?> cl);
+	void wrapExecution(@ClosureParams(value = SimpleType.class, options = "gwf.api.workflow.invoke.WorkflowInvocation") Closure<?> cl);
 
 	/**
 	 * @return environment of workflow execution
@@ -72,12 +72,4 @@ public interface WorkflowDelegateBase {
 	 * @return object created by loading given file
 	 */
 	<T> T load(Class<T> type, String file);
-
-	/**
-	 * Use {@link javax.enterprise.inject.spi.CDI CDI} to look up a bean instance.
-	 *
-	 * @param type of bean
-	 * @return bean instance
-	 */
-	<T> T cdi(Class<T> type);
 }

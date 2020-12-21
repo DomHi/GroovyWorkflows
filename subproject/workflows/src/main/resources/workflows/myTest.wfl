@@ -10,6 +10,8 @@ import gwf.workflows.sample.bean.SampleLocal
 import org.jdbi.v3.core.statement.SqlLogger
 import org.jdbi.v3.core.statement.StatementContext
 
+import javax.enterprise.inject.spi.CDI
+
 logger.info 'Workflow found in workflows'
 
 wrapExecution {
@@ -150,6 +152,10 @@ tasks {
             logger.info bean.sayHello()
         }
     }
+}
+
+static <T> T cdi(Class<T> clazz) {
+    return CDI.current().select(clazz).get()
 }
 
 class WfUser {

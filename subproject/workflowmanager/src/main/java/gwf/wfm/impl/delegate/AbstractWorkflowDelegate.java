@@ -6,18 +6,18 @@ import gwf.api.delegate.WorkflowDelegateBase;
 import gwf.api.executor.ExecutorConfig;
 import gwf.api.executor.TaskExecutor;
 import gwf.api.util.ClosureUtil;
-import gwf.api.workflow.execution.WorkflowExecution;
+import gwf.api.workflow.context.WorkflowContext;
+import gwf.api.workflow.invoke.WorkflowInvocation;
 import gwf.wfm.impl.file.loader.FileLoader;
 import gwf.wfm.impl.phase.ConfigurationPhase;
 import gwf.wfm.impl.task.AbstractTaskContainer;
-import gwf.wfm.impl.task.CdiTaskInstantiator;
+import gwf.wfm.impl.task.DefaultTaskInstantiator;
 import gwf.wfm.impl.task.DefaultTaskContainer;
 import gwf.wfm.impl.task.ExecutableTasks;
 import gwf.wfm.impl.workflow.WorkflowConfiguration;
 import gwf.wfm.impl.workflow.WorkflowConfigurationImpl;
-import gwf.wfm.impl.workflow.locator.WorkflowLocator;
+import gwf.api.workflow.locator.WorkflowLocator;
 
-import javax.enterprise.inject.spi.CDI;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -58,7 +58,7 @@ public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase, 
 	@Override
 	public void tasks(Closure<?> cl) {
 		ConfigurationPhase.execute("tasks", () -> {
-			AbstractTaskContainer newTasks = new DefaultTaskContainer(new CdiTaskInstantiator());
+			AbstractTaskContainer newTasks = new DefaultTaskContainer(new DefaultTaskInstantiator());
 			ClosureUtil.delegateFirst(cl, newTasks).call();
 			executables.add(newTasks);
 		});
@@ -93,15 +93,10 @@ public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase, 
 	}
 
 	@Override
-	public <T> T cdi(Class<T> type) {
-		return CDI.current().select(type).get();
-	}
-
-	@Override
 	public void run(TaskExecutor defaultExecutor, Map<String, Object> properties) {
 		if (executionWrapper != null) {
 			executionWrapper.call(
-					(WorkflowExecution) () -> runInternal(defaultExecutor, properties)
+					(WorkflowInvocation) () -> runInternal(defaultExecutor, properties)
 			);
 		} else {
 			runInternal(defaultExecutor, properties);
@@ -122,7 +117,7 @@ public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase, 
 	}
 
 	protected WorkflowLocator locator() {
-		return CDI.current().select(WorkflowLocator.class).get();
+		return WorkflowContext.get(WorkflowLocator.class);
 	}
 
 	private String extension(String file) {
