@@ -5,7 +5,7 @@ import groovy.lang.GString;
 import gwf.api.WorkflowManagerException;
 import gwf.api.util.ClosureUtil;
 import gwf.api.workflow.context.WorkflowContext;
-import gwf.util.task.context.DefaultDatabaseConfig;
+import gwf.util.task.context.ContextualDataSources;
 import gwf.util.task.sql.BatchStatement;
 import gwf.util.task.sql.HandleConsumer;
 import gwf.util.task.sql.Select;
@@ -104,7 +104,8 @@ public class SqlConfigImpl implements SqlConfig {
 	}
 
 	private DataSource defaultDataSource() {
-		return WorkflowContext.get(DefaultDatabaseConfig.class).getDefaultDs();
+		return WorkflowContext.get(ContextualDataSources.class).getDefault()
+				.orElseThrow(() -> new WorkflowManagerException("No default DataSource configured."));
 	}
 
 	/**

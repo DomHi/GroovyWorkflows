@@ -19,7 +19,7 @@ class StartWorkflow {
         log.info "Start workflow $workflow"
         try {
             WorkflowBuilder.create()
-                .context(new DefaultDatabaseConfig(ds()))
+                .context(new DefaultDatabaseConfig("default", ds()))
                 .locator(new WorkflowsLocatorImpl())
                 .workflowName(workflow)
                 .build()
