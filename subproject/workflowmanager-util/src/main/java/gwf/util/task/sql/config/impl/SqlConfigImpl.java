@@ -49,16 +49,16 @@ public class SqlConfigImpl implements SqlConfig {
 
 	@Override
 	public void jdbi(Closure<?> cl) {
-		jdbi(defaultDataSource(), cl);
+		jdbi(getDefaultDataSource(), cl);
 	}
 
 	@Override
-	public void jdbi(DataSource ds, Closure<?> cl) {
+	public void jdbi(Object ds, Closure<?> cl) {
 		if (jdbi != null) {
 			throw new WorkflowManagerException("Jdbi already configured");
 		}
 
-		jdbi = Jdbi.create(ds);
+		jdbi = Jdbi.create(getDataSource(ds));
 		ClosureUtil.delegateFirst(cl, jdbi).call();
 	}
 
@@ -103,8 +103,8 @@ public class SqlConfigImpl implements SqlConfig {
 		consumers.add(cl::call);
 	}
 
-	private DataSource defaultDataSource() {
-		return WorkflowContext.get(ContextualDataSources.class).getDefault()
+	private DataSource getDefaultDataSource() {
+		return getContextual().getDefault()
 				.orElseThrow(() -> new WorkflowManagerException("No default DataSource configured."));
 	}
 
@@ -113,7 +113,7 @@ public class SqlConfigImpl implements SqlConfig {
 	 */
 	private void checkJdbi() {
 		if (jdbi == null) {
-			jdbi = Jdbi.create(defaultDataSource());
+			jdbi = Jdbi.create(getDefaultDataSource());
 		}
 	}
 
@@ -122,5 +122,16 @@ public class SqlConfigImpl implements SqlConfig {
 		if (ret instanceof String || ret instanceof GString) {
 			config.setStatement(ret.toString());
 		}
+	}
+
+	private DataSource getDataSource(Object ds) {
+		if (ds instanceof DataSource) {
+			return (DataSource) ds;
+		}
+		return getContextual().get(ds.toString());
+	}
+
+	private ContextualDataSources getContextual() {
+		return WorkflowContext.get(ContextualDataSources.class);
 	}
 }
