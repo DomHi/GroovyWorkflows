@@ -20,6 +20,9 @@ public class ConfigurationPhase {
 		if (phase != null) {
 			throw new WorkflowManagerException("Configuration phase already active");
 		}
+		if (ExecutionPhase.isActive()) {
+			throw new WorkflowManagerException("Execution phase currently active.");
+		}
 		activePhase.set(new ConfigurationPhase());
 	}
 
@@ -82,6 +85,10 @@ public class ConfigurationPhase {
 
 		// restore previous phase
 		activePhase.set(previous);
+	}
+
+	public static boolean isActive() {
+		return activePhase.get() != null;
 	}
 
 	private static ConfigurationPhase get() {
