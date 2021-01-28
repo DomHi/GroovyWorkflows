@@ -7,6 +7,14 @@ includeSubDir file('platform')
 // include subprojects
 includeSubDir file('subproject')
 
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+    }
+}
+
+
 def includeSubDir(File dir) {
     fileTree(dir) {
         include '**/*.gradle'

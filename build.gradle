@@ -1,10 +1,4 @@
 
-allprojects {
-    repositories {
-        mavenCentral()
-    }
-}
-
 def props = readProperties()
 
 task deploy(type: Copy) {
