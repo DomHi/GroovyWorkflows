@@ -10,9 +10,6 @@ dependencies {
 
     api 'org.codehaus.groovy:groovy'
 
-    compileOnly 'org.immutables:value'
-    annotationProcessor 'org.immutables:value'
-
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 }

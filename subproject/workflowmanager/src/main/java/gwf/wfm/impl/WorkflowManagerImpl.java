@@ -1,8 +1,7 @@
 package gwf.wfm.impl;
 
 import gwf.api.WorkflowManager;
-import gwf.api.discovery.ImmutableWorkflowDiscoveryContext;
-import gwf.api.discovery.WorkflowDiscoveryContext;
+import gwf.api.WorkflowManagerException;
 import gwf.api.workflow.context.WorkflowContext;
 import gwf.wfm.impl.delegate.AbstractWorkflowDelegate;
 import gwf.wfm.impl.delegate.Delegation;
@@ -28,40 +27,33 @@ public class WorkflowManagerImpl implements WorkflowManager {
 	}
 
 	@Override
-	public void execute(String workflowName, Map<String, String> env) {
+	public void execute(String workflow, Map<String, String> env) {
 
-		setCtx(workflowName);
+		setCtx();
 
 		try {
-			executeInternal(new HashMap<>(env));
+			executeInternal(workflow, new HashMap<>(env));
 		} finally {
 			WorkflowContext.clear();
 		}
 	}
 
-	private void executeInternal(Map<String, String> env) {
-		WorkflowConfiguration wf = getWorkflow(env);
+	private void executeInternal(String workflow, Map<String, String> env) {
+		WorkflowConfiguration wf = getWorkflow(workflow, env);
 		AbstractWorkflowDelegate delegate = Delegation.initial(wf);
 		ExecutionPhase.run(delegate);
 	}
 
-	private void setCtx(String wfName) {
-		WorkflowContext.add(
-				WorkflowDiscoveryContext.class,
-				ImmutableWorkflowDiscoveryContext.builder()
-						.name(wfName)
-						.build()
-		);
-
+	private void setCtx() {
 		WorkflowContext.add(
 				WorkflowLocator.class,
 				locator
 		);
 	}
 
-	private WorkflowConfiguration getWorkflow(Map<String, String> env) {
-		return locator.discover()
+	private WorkflowConfiguration getWorkflow(String workflow, Map<String, String> env) {
+		return locator.absolute(workflow)
 				.map(uri -> new WorkflowConfigurationImpl(uri, env))
-				.orElse(null);
+				.orElseThrow(() -> new WorkflowManagerException("Invalid workflow: " + workflow));
 	}
 }

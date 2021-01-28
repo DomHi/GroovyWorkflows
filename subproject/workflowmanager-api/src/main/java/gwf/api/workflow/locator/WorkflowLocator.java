@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public interface WorkflowLocator {
 
-    Optional<URI> discover();
+    Optional<URI> absolute(String path);
 
     URI relative(URI current, String path);
 }

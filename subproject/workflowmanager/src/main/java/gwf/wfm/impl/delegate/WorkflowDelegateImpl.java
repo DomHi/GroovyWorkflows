@@ -1,10 +1,8 @@
 package gwf.wfm.impl.delegate;
 
 import groovy.lang.Closure;
-import gwf.api.discovery.WorkflowDiscoveryContext;
 import gwf.api.executor.ExecutorConfig;
 import gwf.api.util.ClosureUtil;
-import gwf.api.workflow.context.WorkflowContext;
 import gwf.wfm.impl.executor.ExecutorConfigImpl;
 import gwf.wfm.impl.phase.ConfigurationPhase;
 import gwf.wfm.impl.workflow.WorkflowConfiguration;
@@ -44,7 +42,7 @@ public class WorkflowDelegateImpl extends AbstractWorkflowDelegate {
 	}
 
 	private String getLoggerName() {
-		WorkflowDiscoveryContext ctx = WorkflowContext.get(WorkflowDiscoveryContext.class);
-		return String.format("wfm.%s", ctx.getName());
+		String[] parts = config.getLocation().getPath().split("/");
+		return String.format("worklow.%s", parts[parts.length - 1]);
 	}
 }

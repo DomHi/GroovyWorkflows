@@ -1,23 +1,20 @@
 package gwf.workflows
 
-import gwf.api.discovery.WorkflowDiscoveryContext
-import gwf.api.workflow.context.WorkflowContext
 import gwf.api.workflow.locator.WorkflowLocator
 
 class WorkflowsLocatorImpl implements WorkflowLocator {
 
-    private URI find() {
-        WorkflowDiscoveryContext ctx = WorkflowContext.get(WorkflowDiscoveryContext)
-        return this.class.classLoader.getResource(resourceName(ctx))?.toURI()
+    private URI find(String path) {
+        return this.class.classLoader.getResource(resourceName(path))?.toURI()
     }
 
-    private static String resourceName(WorkflowDiscoveryContext ctx) {
-        return "workflows/${ctx.name}.wfl"
+    private static String resourceName(String path) {
+        return "workflows/${path}.wfl"
     }
 
     @Override
-    Optional<URI> discover() {
-        return Optional.ofNullable(find())
+    Optional<URI> absolute(String path) {
+        return Optional.ofNullable(find(path))
     }
 
     @Override
