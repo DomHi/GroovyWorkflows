@@ -1,13 +1,10 @@
 package gwf.workflows
 
 import groovy.util.logging.Slf4j
-import gwf.api.WorkflowBuilder
-import gwf.api.WorkflowManager
-import gwf.api.workflow.context.WorkflowContext
+import gwf.api.WorkflowExecution
 import gwf.util.task.context.DefaultDatabaseConfig
 
 import javax.ejb.Stateless
-import javax.inject.Inject
 import javax.naming.InitialContext
 import javax.sql.DataSource
 
@@ -17,13 +14,13 @@ class StartWorkflow {
 
     void start(String workflow) {
         log.info "Start workflow $workflow"
+        WorkflowExecution execution = WorkflowExecution.builder()
+            .contextual(new DefaultDatabaseConfig("default", ds()))
+            .locator(new WorkflowsLocatorImpl())
+            .workflowName(workflow)
+            .build();
         try {
-            WorkflowBuilder.create()
-                .context(new DefaultDatabaseConfig("default", ds()))
-                .locator(new WorkflowsLocatorImpl())
-                .workflowName(workflow)
-                .build()
-                .execute()
+            execution.execute();
         } catch (Exception e) {
             log.error("Exception while doing something.", e)
         }

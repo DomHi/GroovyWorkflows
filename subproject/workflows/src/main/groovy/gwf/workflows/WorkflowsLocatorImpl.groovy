@@ -17,11 +17,7 @@ class WorkflowsLocatorImpl implements WorkflowLocator {
 
     @Override
     Optional<URI> discover() {
-        URI wf = find()
-        if (wf != null) {
-            return Optional.of(wf)
-        }
-        return Optional.empty()
+        return Optional.ofNullable(find())
     }
 
     @Override

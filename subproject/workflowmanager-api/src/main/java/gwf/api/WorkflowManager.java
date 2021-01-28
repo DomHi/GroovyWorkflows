@@ -22,8 +22,4 @@ public interface WorkflowManager {
 	 * @param env          execution environment
 	 */
 	void execute(String workflowName, Map<String, String> env);
-
-	static WorkflowBuilder builder() {
-		return new WorkflowBuilder();
-	}
 }
