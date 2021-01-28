@@ -15,7 +15,7 @@ class StartWorkflow {
     void start(String workflow) {
         log.info "Start workflow $workflow"
         WorkflowExecution execution = WorkflowExecution.builder()
-            .contextual(new DefaultDatabaseConfig("default", ds()))
+            .addContextual(new DefaultDatabaseConfig("default", ds()))
             .locator(new WorkflowsLocatorImpl())
             .workflowName(workflow)
             .build();
