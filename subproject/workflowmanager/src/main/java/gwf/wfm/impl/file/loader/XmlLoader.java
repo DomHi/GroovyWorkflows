@@ -1,7 +1,6 @@
 package gwf.wfm.impl.file.loader;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import gwf.api.WorkflowManagerException;
 
 import java.net.URL;
@@ -18,7 +17,6 @@ public class XmlLoader<T> implements FileLoader<T> {
 	public T load(URL url) {
 		try {
 			XmlMapper mapper = new XmlMapper();
-			mapper.registerModule(new JaxbAnnotationModule());
 			return mapper.readValue(url, clazz);
 		} catch (Exception e) {
 			throw new WorkflowManagerException(String.format("Failed to read %s as %s", url, clazz), e);

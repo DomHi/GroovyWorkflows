@@ -2,7 +2,7 @@ package workflows
 
 import gwf.util.task.generic.GenericAction
 import gwf.util.task.sql.ExecuteSql
-import gwf.workflows.data.JaxbXmlData
+
 import gwf.workflows.data.JsonData
 import gwf.workflows.data.XmlData
 import gwf.workflows.data.YamlData
@@ -43,7 +43,6 @@ tasks {
         loadFiles.put(String, "data/data.txt")
         loadFiles.put(JsonData, "data/data.json")
         loadFiles.put(XmlData, "data/data.xml")
-        loadFiles.put(JaxbXmlData, "data/data.jaxb.xml")
         loadFiles.put(YamlData, "data/data.yaml")
 
         loadFiles.each { file ->
