@@ -20,5 +20,5 @@ dependencies {
 }
 
 application {
-    mainClass = 'gwf.workflows.WorkflowsApplication'
+    mainClassName = 'gwf.workflows.WorkflowsApplication'
 }
