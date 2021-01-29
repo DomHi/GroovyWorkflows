@@ -1,7 +1,6 @@
 
 plugins {
     id 'application'
-    id 'groovy'
 }
 
 dependencies {
@@ -10,6 +9,9 @@ dependencies {
 
     compileOnly 'org.slf4j:slf4j-api'
     runtimeOnly 'org.slf4j:slf4j-simple'
+
+    compileOnly 'org.projectlombok:lombok:1.18.16'
+    annotationProcessor 'org.projectlombok:lombok:1.18.16'
 
     implementation project(':subproject:workflowmanager-api')
     implementation project(':subproject:workflowmanager-util')

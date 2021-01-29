@@ -21,6 +21,3 @@ See [here](docs/index.md).
 #### workflows
 
     sample project to demonstrate usage of the API.
-
-    A simple web frontend is provided on 'workflows/index.jsf' when the war is deployed to a JavaEE container.
-    It can be used to start workflow execution.
