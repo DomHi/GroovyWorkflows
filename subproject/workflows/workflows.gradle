@@ -1,18 +1,24 @@
 
 plugins {
-    id 'war'
+    id 'application'
     id 'groovy'
 }
 
 dependencies {
 
-    providedCompile platform(project(':platform:base'))
+    implementation platform(project(':platform:base'))
 
-    providedCompile 'javax:javaee-api'
-    providedCompile 'org.slf4j:slf4j-api'
+    compileOnly 'org.slf4j:slf4j-api'
+    runtimeOnly 'org.slf4j:slf4j-simple'
 
     implementation project(':subproject:workflowmanager-api')
     implementation project(':subproject:workflowmanager-util')
 
     runtimeOnly project(':subproject:workflowmanager')
+
+    implementation 'com.h2database:h2'
+}
+
+application {
+    mainClass = 'gwf.workflows.WorkflowsApplication'
 }

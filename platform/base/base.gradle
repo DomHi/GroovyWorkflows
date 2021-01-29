@@ -11,9 +11,11 @@ dependencies {
     api platform('org.jdbi:jdbi3-bom:3.14.1')
 
     constraints {
-        api 'javax:javaee-api:7.0'
 
         api 'org.slf4j:slf4j-api:1.7.30'
+        api 'org.slf4j:slf4j-simple:1.7.30'
+
+        api 'com.h2database:h2:1.4.200'
 
         api 'org.codehaus.groovy:groovy:3.0.6'
 

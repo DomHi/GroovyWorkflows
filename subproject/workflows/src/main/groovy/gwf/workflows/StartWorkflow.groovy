@@ -3,13 +3,11 @@ package gwf.workflows
 import groovy.util.logging.Slf4j
 import gwf.api.WorkflowExecution
 import gwf.util.task.context.DefaultDatabaseConfig
+import org.h2.jdbcx.JdbcDataSource
 
-import javax.ejb.Stateless
-import javax.naming.InitialContext
 import javax.sql.DataSource
 
 @Slf4j
-@Stateless
 class StartWorkflow {
 
     void start(String workflow) {
@@ -27,6 +25,8 @@ class StartWorkflow {
     }
 
     private DataSource ds() {
-        return (DataSource) new InitialContext().lookup("java:jboss/datasources/ExampleDS")
+        DataSource ds = new JdbcDataSource();
+        ds.setUrl("jdbc:h2:mem:test;DB_CLOSE_ON_EXIT=FALSE")
+        return ds
     }
 }

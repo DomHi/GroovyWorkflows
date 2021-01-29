@@ -1,12 +1,6 @@
 
 def props = readProperties()
 
-task deploy(type: Copy) {
-
-    from tasks.getByPath(":subproject:workflows:war")
-    destinationDir file(props."deploy.dir")
-}
-
 def readProperties() {
     def properties = new Properties()
 
