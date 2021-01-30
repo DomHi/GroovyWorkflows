@@ -6,12 +6,15 @@ plugins {
 dependencies {
 
     implementation platform(project(':platform:base'))
+    implementation platform('io.projectreactor:reactor-bom:2020.0.3')
 
     compileOnly 'org.slf4j:slf4j-api'
     runtimeOnly 'org.slf4j:slf4j-simple'
 
     compileOnly 'org.projectlombok:lombok:1.18.16'
     annotationProcessor 'org.projectlombok:lombok:1.18.16'
+
+    implementation 'io.projectreactor:reactor-core'
 
     implementation project(':subproject:workflowmanager-api')
     implementation project(':subproject:workflowmanager-util')

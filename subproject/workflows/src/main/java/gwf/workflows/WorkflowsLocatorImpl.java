@@ -10,6 +10,14 @@ import java.util.Optional;
 public class WorkflowsLocatorImpl implements WorkflowLocator {
 
     private URI find(String path) {
+        return fromString(path).orElseGet(() -> getClasspathResource(path));
+    }
+
+    private static String resourceName(String path) {
+        return "workflows/" + path + ".wfl";
+    }
+
+    private URI getClasspathResource(String path) {
         URL resource = this.getClass().getClassLoader().getResource(resourceName(path));
         try {
             return resource == null ? null : resource.toURI();
@@ -18,8 +26,13 @@ public class WorkflowsLocatorImpl implements WorkflowLocator {
         }
     }
 
-    private static String resourceName(String path) {
-        return "workflows/" + path + ".wfl";
+    private Optional<URI> fromString(String uri) {
+        try {
+            return Optional.of(URI.create(uri));
+        } catch (Exception e) {
+            // ignore
+        }
+        return Optional.empty();
     }
 
     @Override

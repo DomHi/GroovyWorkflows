@@ -8,9 +8,11 @@ import org.h2.jdbcx.JdbcDataSource;
 import javax.sql.DataSource;
 
 @Slf4j
-public class StartWorkflow {
+public class WorkflowHelper {
 
-    public void start(String workflow) {
+    private WorkflowHelper() {}
+
+    public static void start(String workflow) {
         log.info("Start workflow " + workflow);
         WorkflowExecution execution = WorkflowExecution.builder()
             .addContextual(new DefaultDatabaseConfig("default", ds()))
@@ -24,7 +26,7 @@ public class StartWorkflow {
         }
     }
 
-    private DataSource ds() {
+    private static DataSource ds() {
         JdbcDataSource ds = new JdbcDataSource();
         ds.setUrl("jdbc:h2:mem:test;DB_CLOSE_ON_EXIT=FALSE");
         return ds;
