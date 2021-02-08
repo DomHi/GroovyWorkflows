@@ -19,7 +19,7 @@ public class WorkflowSelector extends JPanel {
     JFileChooser fileChooser = new JFileChooser();
 
     public WorkflowSelector(URI[] initialValues) {
-        super(new FlowLayout(FlowLayout.LEADING));
+        super(new GridBagLayout());
 
         addWorkflowCombo(initialValues);
         addAddButton();
@@ -31,11 +31,15 @@ public class WorkflowSelector extends JPanel {
 
     private void addWorkflowCombo(URI[] initialValues) {
         workflowCombo = new WorkflowCombo(initialValues);
-        add(workflowCombo);
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        add(workflowCombo, c);
     }
 
     private void addAddButton() {
         addButton = new JButton("Add");
+        addButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         addButton.addActionListener(this::addAction);
         add(addButton);
     }

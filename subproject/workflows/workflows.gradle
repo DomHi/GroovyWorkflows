@@ -15,6 +15,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.16'
 
     implementation 'io.projectreactor:reactor-core'
+    implementation 'io.projectreactor.addons:reactor-extra'
 
     implementation project(':subproject:workflowmanager-api')
     implementation project(':subproject:workflowmanager-util')
