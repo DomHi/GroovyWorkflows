@@ -2,6 +2,12 @@ plugins {
     id 'java-library'
 }
 
+java {
+    javaToolchains {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+    }
+}
+
 dependencies {
     api platform(project(':platform:base'))
     annotationProcessor platform(project(':platform:base'))
