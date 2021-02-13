@@ -13,7 +13,7 @@ dependencies {
     constraints {
 
         api 'org.slf4j:slf4j-api:1.7.30'
-        api 'org.slf4j:slf4j-simple:1.7.30'
+        api 'org.slf4j:slf4j-jdk14:1.7.30'
 
         api 'com.h2database:h2:1.4.200'
 

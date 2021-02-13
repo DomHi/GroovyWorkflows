@@ -5,9 +5,21 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.logging.LogManager;
 
 @Slf4j
 public class WorkflowsApplication {
+
+    // init logging
+    static {
+        try {
+            LogManager.getLogManager().readConfiguration(
+                    WorkflowsApplication.class.getClassLoader().getResourceAsStream("logging.properties")
+            );
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
 
     public static void main(String[] args) {
 

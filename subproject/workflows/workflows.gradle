@@ -9,7 +9,7 @@ dependencies {
     implementation platform('io.projectreactor:reactor-bom:2020.0.3')
 
     compileOnly 'org.slf4j:slf4j-api'
-    runtimeOnly 'org.slf4j:slf4j-simple'
+    runtimeOnly 'org.slf4j:slf4j-jdk14'
 
     compileOnly 'org.projectlombok:lombok:1.18.16'
     annotationProcessor 'org.projectlombok:lombok:1.18.16'
