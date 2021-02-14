@@ -45,7 +45,7 @@ public class WorkflowCombo extends JComboBox<URI> {
         }
 
         private String getUriHtml(URI uri) {
-            String[] path = uri.getPath().split("/");
+            String[] path = uri.toString().split("/");
             return String.format("<html>%s <font color=\"#aaaaaa\">-- %s</font></html>", path[path.length - 1], uri.getScheme());
         }
     }

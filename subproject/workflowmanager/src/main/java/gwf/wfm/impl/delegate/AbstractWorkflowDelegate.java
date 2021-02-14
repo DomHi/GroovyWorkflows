@@ -8,6 +8,7 @@ import gwf.api.executor.TaskExecutor;
 import gwf.api.util.ClosureUtil;
 import gwf.api.workflow.context.WorkflowContext;
 import gwf.api.workflow.invoke.WorkflowInvocation;
+import gwf.api.workflow.locator.UriResolver;
 import gwf.wfm.impl.file.loader.FileLoader;
 import gwf.wfm.impl.phase.ConfigurationPhase;
 import gwf.wfm.impl.task.AbstractTaskContainer;
@@ -78,7 +79,7 @@ public abstract class AbstractWorkflowDelegate implements WorkflowDelegateBase, 
 
 	@Override
 	public URL url(String uri) {
-		URI resolved = config.getLocation().resolve(uri);
+		URI resolved = UriResolver.relative(config.getLocation(), uri);
 		try {
 			return resolved.toURL();
 		} catch (MalformedURLException e) {

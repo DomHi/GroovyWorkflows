@@ -1,5 +1,6 @@
 package gwf.workflows;
 
+import gwf.api.workflow.locator.UriResolver;
 import gwf.api.workflow.locator.WorkflowLocator;
 
 import java.net.URI;
@@ -42,6 +43,6 @@ public class WorkflowsLocatorImpl implements WorkflowLocator {
 
     @Override
     public URI relative(URI current, String path) {
-        return current.resolve(path);
+        return UriResolver.relative(current, path);
     }
 }
