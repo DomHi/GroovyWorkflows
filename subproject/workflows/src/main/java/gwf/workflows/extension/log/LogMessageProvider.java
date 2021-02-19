@@ -8,7 +8,7 @@ import java.util.logging.LogRecord;
 
 public class LogMessageProvider {
 
-    private static final Sinks.Many<LogEntry> logSink = Sinks.many().multicast().directBestEffort();
+    private static final Sinks.Many<LogRecord> logSink = Sinks.many().multicast().directBestEffort();
 
     private LogMessageProvider() {}
 
@@ -17,14 +17,16 @@ public class LogMessageProvider {
     }
 
     private static void process(LogRecord record) {
-        logSink.emitNext(convertToEntry(record), Sinks.EmitFailureHandler.FAIL_FAST);
+        logSink.emitNext(record, Sinks.EmitFailureHandler.FAIL_FAST);
     }
 
     private static LogEntry convertToEntry(LogRecord record) {
-        return new LogEntry(record.getLevel().getName(), record.getMessage());
+        return new LogEntry(record.getLevel().getName(), record.getMessage(), record.getMillis());
     }
 
     public static Flux<LogEntry> listen() {
-        return logSink.asFlux();
+        return logSink.asFlux()
+                .filter(record -> record.getLoggerName().startsWith("workflow."))
+                .map(LogMessageProvider::convertToEntry);
     }
 }

@@ -43,6 +43,6 @@ public class WorkflowDelegateImpl extends AbstractWorkflowDelegate {
 
 	private String getLoggerName() {
 		String[] parts = config.getLocation().toString().split("/");
-		return String.format("worklow.%s", parts[parts.length - 1]);
+		return String.format("workflow.%s", parts[parts.length - 1]);
 	}
 }

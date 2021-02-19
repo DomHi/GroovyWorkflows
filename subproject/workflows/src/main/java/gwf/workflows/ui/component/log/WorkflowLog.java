@@ -9,6 +9,9 @@ import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 @Slf4j
 public class WorkflowLog extends JPanel {
@@ -65,10 +68,15 @@ public class WorkflowLog extends JPanel {
         private final JPanel panel = new JPanel();
         private final JTextField level = new JTextField();
         private final JTextField message = new JTextField();
+        private final JTextField timestamp = new JTextField();
+
+        private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss,SSS")
+                .withZone(ZoneId.systemDefault());
 
         private LogListCellRenderer() {
             panel.setLayout(new GridBagLayout());
 
+            initTimestampField();
             initLevelField();
             initMessageField();
         }
@@ -97,10 +105,31 @@ public class WorkflowLog extends JPanel {
             panel.add(message, c);
         }
 
+        private void initTimestampField() {
+            GridBagConstraints c = new GridBagConstraints();
+            c.anchor = GridBagConstraints.LINE_START;
+
+            Dimension lvlDim = timestamp.getPreferredSize();
+            lvlDim.setSize(100, lvlDim.getHeight());
+            timestamp.setPreferredSize(lvlDim);
+            timestamp.setHorizontalAlignment(SwingConstants.CENTER);
+            timestamp.setBorder(BorderFactory.createEmptyBorder());
+
+            panel.add(timestamp, c);
+        }
+
         @Override
         public Component getListCellRendererComponent(JList<? extends LogEntry> list, LogEntry value, int index, boolean isSelected, boolean cellHasFocus) {
 
-            LineColors colors = getColors(value);
+            LineColors colors = getColors(value, cellHasFocus);
+
+            timestamp.setText(
+                    timeFormatter.format(
+                        Instant.ofEpochMilli(value.getMillis())
+                    )
+            );
+            timestamp.setBackground(colors.getBackground());
+            timestamp.setForeground(colors.getForeground());
 
             level.setText(value.getLevel());
             level.setBackground(colors.getBackground());
@@ -113,7 +142,12 @@ public class WorkflowLog extends JPanel {
             return panel;
         }
 
-        private LineColors getColors(LogEntry entry) {
+        private LineColors getColors(LogEntry entry, boolean cellHasFocus) {
+
+            if (cellHasFocus) {
+                return new LineColors(Color.BLUE, Color.WHITE);
+            }
+
             switch (entry.getLevel()) {
                 case "ERROR":
                     return new LineColors(Color.RED, Color.BLACK);

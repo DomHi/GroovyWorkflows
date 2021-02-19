@@ -4,6 +4,7 @@ import gwf.workflows.extension.log.LogMessageProvider;
 import gwf.workflows.ui.component.log.WorkflowLog;
 import gwf.workflows.ui.component.stats.StatisticsComponent;
 import lombok.extern.slf4j.Slf4j;
+import reactor.swing.SwingScheduler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,7 +40,11 @@ public class MainComponent extends JPanel {
         );
 
         LogMessageProvider.listen()
-                .subscribe(workflowLog::addLogEntry);
+                .publishOn(SwingScheduler.create())
+                .subscribe(
+                        workflowLog::addLogEntry,
+                        e -> log.error("Exception caught", e)
+                );
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridy = 1;
